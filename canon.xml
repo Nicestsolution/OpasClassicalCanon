@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<canon>
+  <composers>
+    <composer>
+      <ID>boccherini1743</ID>
+      <familyname>Boccherini</familyname>
+      <name>Luigi</name>
+      <style>Klassiek</style>
+      <yearofbirth>1743</yearofbirth>
+      <yearofdeath>1805</yearofdeath>
+      <placeofbirth>Lucca, Italië</placeofbirth>
+      <placeofdeath>Madrid</placeofdeath>
+      <narrative>Luigi Boccherini is geboren in Italie, maar werkte voornamelijk voor Spaanse vorsten.</narrative>
+    </composer>
+    <composer>
+      <ID>brahms1833</ID>
+      <familyname>Brahms</familyname>
+      <name>Johannes</name>
+      <style>Romantiek</style>
+      <yearofbirth>1833</yearofbirth>
+      <yearofdeath>1897</yearofdeath>
+      <narrative />
+    </composer>
+  </composers>
+  <music>
+    <song>
+      <ID>20241101</ID>
+      <appenddate>
+        <year>2024</year>
+        <month>11</month>
+        <day>01</day>
+      </appenddate>
+      <reference>boccherini1743</reference>
+      <title>Menuet (Strijkkwintet in E, Op 11 No 5, deel III Menuet, Catalogus G 275)</title>
+      <artist></artist>
+      <spotify>https://open.spotify.com/track/7lv9BUinZDHRRpomNE36mF?si=a57433b5b51b4677</spotify>
+      <narrative>
+        <para>En dan nu échte klassieke muziek. Vaak wordt alle oudere of “serieuze” muziek als klassieke muziek aangeduid, maar de échte klassieke muziek komt uit de periode van ongeveer 1730 tot 1820. De klassieke stijl is een reactie op de barok (met als hoogte- én eindpunt Johann Sebastian Bach, zijn zonen componeerden in de klassieke stijl) waarbij de polyfone muziek (met door elkaar lopende melodieën) plaats maakt voor één hoofdmelodie met een begeleiding. Vorm van de compositie wordt belangrijk. In deze periode ontstaan de moderne instrumenten als piano (pianoforte) en de klarinet, en vaste ensembles zoals het strijkkwartet (2 violen, altviool en cello).</para>
+        <para>De bekendste klassieke componist is natuurlijk Mozart.</para>
+        <para>Luigi Boccherini's menuet, het derde deel uit een strijkwintet (2 violen, 1 altviool en 2 cellos) is verreweg zijn bekendste werk.</para>
+      </narrative>
+    </song>
+    <song>
+      <ID>20241026b</ID>
+      <reference>brahms1833</reference>
+      <title>Wiegenlied (5 Lieder Op 49 No 4)(cello en piano)</title>
+      <artist>Yo-Yo Ma en Katryn Scot </artist>
+      <spotify>https://open.spotify.com/track/5ynuusYL8dSrHK5fSjSqXO?si=d258a13e9e684c30</spotify>
+      <narrative>
+        <para>Maar deze versie voor cello spreekt misschien meer aan.</para>
+      </narrative>
+      <appenddate>
+        <year>2024</year>
+        <month>10</month>
+        <day>26</day>
+      </appenddate>
+    </song>
+    <song>
+      <ID>20241026a</ID>
+      <reference>brahms1833</reference>
+      <title>Wiegenlied (5 Lieder Op 49 No 4)(oorspronkelijk)</title>
+      <artist>de Nederlandse sopraan Ely Ameling en pianist Dalton Baldwin</artist>
+      <spotify>https://open.spotify.com/track/5ynuusYL8dSrHK5fSjSqXO?si=d258a13e9e684c30</spotify>
+      <narrative>
+        <para>Waar anders te beginnen dan bij de melodie van het speeldoosje dat boven de wieg van Nelleke, Marianne en Frank heeft gehangen en waarbij ze ingeslapen zijn?</para>
+        <para>De oorspronkelijke versie is voor vrouwenstem en piano.</para>
+        <columns>
+          <column2>
+            <columnheader>Vertaling in het Nederlands</columnheader>
+            <curs>Goedenavond, goedenacht, met rozen omringd</curs>
+            <curs>Met nageltjes versierd, kruip onder de deken</curs>
+            <curs>Morgenvroeg, als God het wil, zul je weer wakker worden</curs>
+            <curs>Morgenvroeg, als God het wil, zul je weer wakker worden</curs>
+            <curs></curs>
+            <curs>Goedenavond, goedenacht, bewaakt door engelen,</curs>
+            <curs>Die je in je droom de boom van kindje Jezus tonen</curs>
+            <curs>Slaap nu zacht en zoet, kijk naar het paradijs in je droom</curs>
+            <curs>Slaap nu zacht en zoet, kijk naar het paradijs in je droom</curs>
+          </column2>
+        </columns>
+      </narrative>
+      <songtext>
+        <nl />
+        <original language="">
+          <para>Guten Abend, gut' Nacht, mit Rosen bedacht,</para>
+          <para>Mit Näglein besteckt, schlupf unter die Deck</para>
+          <para>Morgen früh, wenn Gott will, wirst du wieder geweckt</para>
+          <para>Morgen früh, wenn Gott will, wirst du wieder geweckt</para>
+          <para />
+          <para>Guten Abend, gute Nacht, von Englein bewacht,</para>
+          <para>Die zeigen im Traum dir Christkindleins Baum</para>
+          <para>Schlaf nun selig und süß, schau im Traum's Paradies</para>
+          <para>Schlaf nun selig und süß, schau im Traum's Paradies</para>
+        </original>
+        <translation language="nl">
+          <para>Goedenavond, goedenacht, met rozen omringd</para>
+          <para>Met nageltjes versierd, kruip onder de deken</para>
+          <para>Morgenvroeg, als God het wil, zul je weer wakker worden</para>
+          <para>Morgenvroeg, als God het wil, zul je weer wakker worden</para>
+          <para />
+          <para>Goedenavond, goedenacht, bewaakt door engelen,</para>
+          <para>Die je in je droom de boom van kindje Jezus tonen</para>
+          <para>Slaap nu zacht en zoet, kijk naar het paradijs in je droom</para>
+          <para>Slaap nu zacht en zoet, kijk naar het paradijs in je droom</para>
+        </translation>
+      </songtext>
+      <appenddate>
+        <year>2024</year>
+        <month>10</month>
+        <day>26</day>
+      </appenddate>
+    </song>
+  </music>
+</canon>

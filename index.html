@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Opa's klassieke canon</title>
+  <style>
+    body { font-family: sans-serif; }
+    .composer, .song { margin-bottom: 20px; }
+    .composer { border-bottom: 1px solid #ccc; padding-bottom: 10px; }
+  </style>
+</head>
+<body>
+  <h1>Opa's klassieke canon</h1>
+  <div id="content"></div>
+
+  <script>
+    fetch('./canon.xml')
+    .then(response => response.text())
+    .then(xmlText => {
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+    const composers = xmlDoc.querySelectorAll("composer");
+    const songs = xmlDoc.querySelectorAll("song");
+    const content = document.getElementById("content");
+
+    composers.forEach(comp => {
+      const id = comp.querySelector("ID").textContent;
+      const name = comp.querySelector("name").textContent;
+      const family = comp.querySelector("familyname").textContent;
+      const style = comp.querySelector("style").textContent;
+      const birth = comp.querySelector("yearofbirth").textContent;
+      const death = comp.querySelector("yearofdeath").textContent;
+      const narrative = comp.querySelector("narrative").textContent;
+
+      const composerDiv = document.createElement("div");
+      composerDiv.className = "composer";
+      composerDiv.innerHTML = `<h2>${name} ${family}</h2>
+        <p><strong>Stijl:</strong> ${style}</p>
+        <p><strong>Levensjaren:</strong> ${birth}–${death}</p>
+        <p>${narrative}</p>`;
+
+      const relatedSongs = Array.from(songs).filter(song => 
+        song.querySelector("reference").textContent === id
+      );
+
+      relatedSongs.forEach(song => {
+        const title = song.querySelector("title").textContent;
+        const artist = song.querySelector("artist").textContent;
+        const spotify = song.querySelector("spotify").textContent;
+		const paras = song.querySelectorAll("narrative para");
+		let songNarrative = "";
+		paras.forEach(p => {
+			if (p.textContent.trim()) {
+				songNarrative += `<p>${p.textContent}</p>`;
+			}
+		}); // ← closes the forEach loop
+		
+        const songDiv = document.createElement("div");
+        songDiv.className = "song";
+        songDiv.innerHTML = `<h3>${title}</h3>
+          <p><strong>Artiest:</strong> ${artist}</p>
+          <p>${songNarrative}</p>
+          <p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>`;
+        composerDiv.appendChild(songDiv);
+      });
+
+      content.appendChild(composerDiv);
+    });	
+  });
+  </script>
+</body>
+</html>
