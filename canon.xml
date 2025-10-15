@@ -10,7 +10,9 @@
       <yearofdeath>1805</yearofdeath>
       <placeofbirth>Lucca, Italië</placeofbirth>
       <placeofdeath>Madrid</placeofdeath>
-      <narrative><![CDATA[Luigi Boccherini is geboren in Italie, maar werkte voornamelijk voor Spaanse vorsten.</narrative>]]>
+      <narrative>
+	  <![CDATA[Luigi Boccherini is geboren in Italie, maar werkte voornamelijk voor Spaanse vorsten.]]>
+	  </narrative>
     </composer>
     <composer>
       <ID>brahms1833</ID>
@@ -21,7 +23,9 @@
       <yearofdeath>1897</yearofdeath>
       <placeofbirth>Heide, Duitsland (Holstein)</placeofbirth>
       <placeofdeath>Wenen</placeofdeath>
-      <narrative>Johannes Brahms is een van de bekendste componisten uit het hoogtepunt van de romantiek. Lange melodische lijnen zijn karateristiek voor zijn muziek. Brahms was overigens ook belangrijk omdat hij de "oude" muziek van Johann Sebastian Bach weer onder de aandacht bracht. <narrative/>
+      <narrative>
+	  <![CDATA[Johannes Brahms is een van de bekendste componisten uit het hoogtepunt van de romantiek. Lange melodische lijnen zijn karateristiek voor zijn muziek. Brahms was overigens ook belangrijk omdat hij de "oude" muziek van Johann Sebastian Bach weer onder de aandacht bracht.]]>
+	  </narrative>                                                   
     </composer>
   </composers>
   <music>
@@ -36,11 +40,10 @@
       <title>Menuet (Strijkkwintet in E, Op 11 No 5, deel III Menuet, Catalogus G 275)</title>
       <artist></artist>
       <spotify>https://open.spotify.com/track/7lv9BUinZDHRRpomNE36mF?si=a57433b5b51b4677</spotify>
-      <narrative>
-        En dan nu échte klassieke muziek. Vaak wordt alle oudere of “serieuze” muziek als klassieke muziek aangeduid, maar de échte klassieke muziek komt uit de periode van ongeveer 1730 tot 1820. De klassieke stijl is een reactie op de barok (met als hoogte- én eindpunt Johann Sebastian Bach, zijn zonen componeerden in de klassieke stijl) waarbij de polyfone muziek (met door elkaar lopende melodieën) plaats maakt voor één hoofdmelodie met een begeleiding. Vorm van de compositie wordt belangrijk. In deze periode ontstaan de moderne instrumenten als piano (pianoforte) en de klarinet, en vaste ensembles zoals het strijkkwartet (2 violen, altviool en cello).<br>
-        De bekendste klassieke componist is natuurlijk Mozart.<br>
-        Luigi Boccherini's menuet, het derde deel uit een strijkwintet (2 violen, 1 altviool en 2 cellos) is verreweg zijn bekendste werk.
-      </narrative>
+      <narrative><![CDATA[En dan nu échte klassieke muziek. Vaak wordt alle oudere of “serieuze” muziek als klassieke muziek aangeduid, maar de échte klassieke muziek komt uit de periode van ongeveer 1730 tot 1820. De klassieke stijl is een reactie op de barok (met als hoogte- én eindpunt Johann Sebastian Bach, zijn zonen componeerden in de klassieke stijl) waarbij de polyfone muziek (met door elkaar lopende melodieën) plaats maakt voor één hoofdmelodie met een begeleiding. Vorm van de compositie wordt belangrijk. In deze periode ontstaan de moderne instrumenten als piano (pianoforte) en de klarinet, en vaste ensembles zoals het strijkkwartet (2 violen, altviool en cello).<br>
+      De bekendste klassieke componist is natuurlijk Mozart.<br>
+      Luigi Boccherini's menuet, het derde deel uit een strijkwintet (2 violen, 1 altviool en 2 cellos) is verreweg zijn bekendste werk.]]>
+	  </narrative>
     </song>
     <song>
       <ID>20241026b</ID>
@@ -48,7 +51,7 @@
       <title>Wiegenlied (5 Lieder Op 49 No 4)(cello en piano)</title>
       <artist>Yo-Yo Ma en Katryn Scot </artist>
       <spotify>https://open.spotify.com/track/5ynuusYL8dSrHK5fSjSqXO?si=d258a13e9e684c30</spotify>
-      <narrative>Maar deze versie voor cello spreekt misschien meer aan. </narrative>
+      <narrative><![CDATA[Maar deze versie voor cello spreekt misschien meer aan.]]> </narrative>
       <appenddate>
         <year>2024</year>
         <month>10</month>
@@ -61,11 +64,11 @@
       <title>Wiegenlied (5 Lieder Op 49 No 4)(oorspronkelijk)</title>
       <artist>de Nederlandse sopraan Ely Ameling en pianist Dalton Baldwin</artist>
       <spotify>https://open.spotify.com/track/5ynuusYL8dSrHK5fSjSqXO?si=d258a13e9e684c30</spotify>
-      <narrative>Waar anders te beginnen dan bij de melodie van het speeldoosje dat boven de wieg van Nelleke, Marianne en Frank heeft gehangen en waarbij ze ingeslapen zijn?<br>
-        De oorspronkelijke versie is voor vrouwenstem en piano.</narrative>
+      <narrative><![CDATA[Waar anders te beginnen dan bij de melodie van het speeldoosje dat boven de wieg van Nelleke, Marianne en Frank heeft gehangen en waarbij ze ingeslapen zijn?<br>
+        De oorspronkelijke versie is voor vrouwenstem en piano.]]></narrative>
       <songtext>
         <original language="de">
-          Guten Abend, gut' Nacht, mit Rosen bedacht,<br>
+          <![CDATA[Guten Abend, gut' Nacht, mit Rosen bedacht,<br>
           Mit Näglein besteckt, schlupf unter die Deck<br>
           Morgen früh, wenn Gott will, wirst du wieder geweckt<br>
           Morgen früh, wenn Gott will, wirst du wieder geweckt<br>
@@ -73,10 +76,10 @@
           Guten Abend, gute Nacht, von Englein bewacht,<br>
           Die zeigen im Traum dir Christkindleins Baum<br>
           Schlaf nun selig und süß, schau im Traum's Paradies<br>
-          Schlaf nun selig und süß, schau im Traum's Paradies
+          Schlaf nun selig und süß, schau im Traum's Paradies]]>
         </original>
         <translation language="nl">
-          Goedenavond, goedenacht, met rozen omringd<br>
+          <![CDATA[Goedenavond, goedenacht, met rozen omringd<br>
           Met nageltjes versierd, kruip onder de deken<br>
           Morgenvroeg, als God het wil, zul je weer wakker worden<br>
           Morgenvroeg, als God het wil, zul je weer wakker worden<br>
@@ -84,7 +87,7 @@
           Goedenavond, goedenacht, bewaakt door engelen,<br>
           Die je in je droom de boom van kindje Jezus tonen<br>
           Slaap nu zacht en zoet, kijk naar het paradijs in je droom<br>
-          Slaap nu zacht en zoet, kijk naar het paradijs in je droom
+          Slaap nu zacht en zoet, kijk naar het paradijs in je droom]]>
         </translation>
       </songtext>
       <appenddate>
