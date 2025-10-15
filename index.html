@@ -82,10 +82,45 @@
         padding: 0.75rem;
       }
     }
+    #menu {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+#menu button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background-color: #003366;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#menu button:hover {
+  background-color: #005599;
+}
+
+@media (max-width: 600px) {
+  #menu {
+    flex-direction: column;
+  }
+
+  #menu button {
+    font-size: 1.2rem;
+  }
+}
+
   </style>
 </head>
 <body>
   <h1>Opa's klassieke canon</h1>
+  <nav id="menu">
+    <button onclick="showSection('playlist')">🎵 Playlist</button>
+    <button onclick="showSection('content')">🎼 Componisten</button>
+  </nav>
+
   <div id="playlist"></div>
   <div id="content"></div>
 
@@ -232,8 +267,19 @@
         });
       });
   </script>
+  <script>
+  function showSection(section) {
+    document.getElementById("playlist").style.display = section === "playlist" ? "block" : "none";
+    document.getElementById("content").style.display = section === "content" ? "block" : "none";
+  }
+
+  // Default: toon playlist
+  showSection("playlist");
+</script>
+
 </body>
 </html>
+
 
 
 
