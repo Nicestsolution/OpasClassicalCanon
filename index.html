@@ -3,223 +3,223 @@
 <head>
   <meta charset="UTF-8">
   <title>Opa's klassieke canon</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      margin: 1rem;
+      line-height: 1.6;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
 
-<style>
-  body {
-    font-family: 'Inter', system-ui, sans-serif;
-    margin: 1rem;
-    line-height: 1.6;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-  }
+    h1, h2, h3 {
+      margin-top: 1.5rem;
+    }
 
-  .song-block {
-    margin-bottom: 2rem;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 1rem;
-  }
+    .song-block {
+      margin-bottom: 2rem;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 1rem;
+    }
 
-  .collapsed {
-    cursor: pointer;
-    font-weight: bold;
-    color: #003366;
-    padding: 0.5rem;
-    background-color: #f0f0f0;
-    border-radius: 4px;
-  }
+    .collapsed {
+      cursor: pointer;
+      font-weight: bold;
+      color: #003366;
+      padding: 0.5rem;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+    }
 
-  .collapsed:hover {
-    background-color: #e0e0e0;
-  }
+    .collapsed:hover {
+      background-color: #e0e0e0;
+    }
 
-  .expanded {
-    margin-top: 0.5rem;
-  }
+    .expanded {
+      margin-top: 0.5rem;
+    }
 
-  h3 {
-    font-size: 1.2rem;
-    margin-bottom: 0.3rem;
-  }
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
 
-  iframe, audio {
-    max-width: 100%;
-  }
+    table.lyrics {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
 
-  @media (max-width: 600px) {
-  body {
-    font-size: 1.3rem;
-  }
+    table.lyrics th, table.lyrics td {
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+      vertical-align: top;
+    }
 
-  h1, h2, h3 {
-    font-size: 1.4rem;
-  }
+    table.lyrics th {
+      background-color: #f0f0f0;
+      text-align: left;
+    }
 
-  p, .collapsed {
-    font-size: 1.2rem;
-  }
+    @media (max-width: 600px) {
+      body {
+        font-size: 1.3rem;
+      }
 
-  .collapsed {
-    padding: 0.75rem;
-  }
-}
-table.lyrics {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-table.lyrics th, table.lyrics td {
-  border: 1px solid #ccc;
-  padding: 0.5rem;
-  vertical-align: top;
-}
-table.lyrics th {
-  background-color: #f0f0f0;
-  text-align: left;
-}
-</style>
+      h1, h2, h3 {
+        font-size: 1.4rem;
+      }
+
+      p, .collapsed {
+        font-size: 1.2rem;
+      }
+
+      .collapsed {
+        padding: 0.75rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  	<h1>Opa's klassieke canon</h1>
-	<div id="playlist"></div>
-  	<div id="content"></div>
+  <h1>Opa's klassieke canon</h1>
+  <div id="playlist"></div>
+  <div id="content"></div>
 
   <script>
-    fetch('./canon.xml')
-    .then(response => response.text())
-    .then(xmlText => {
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-    const composers = xmlDoc.querySelectorAll("composer");
-    const songs = xmlDoc.querySelectorAll("song");
-    const content = document.getElementById("content");
+    fetch('canon.xml')
+      .then(res => res.text())
+      .then(str => {
+        const xml = new DOMParser().parseFromString(str, "application/xml");
+        const composers = [...xml.getElementsByTagName("composer")];
+        const songs = [...xml.getElementsByTagName("song")];
 
-    composers.forEach(comp => {
-      const id = comp.querySelector("ID").textContent;
-      const name = comp.querySelector("name").textContent;
-      const family = comp.querySelector("familyname").textContent;
-      const style = comp.querySelector("style").textContent;
-      const birth = comp.querySelector("yearofbirth").textContent;
-      const death = comp.querySelector("yearofdeath").textContent;
-      const narrative = comp.querySelector("narrative").textContent;
+        const playlist = document.getElementById("playlist");
+        const content = document.getElementById("content");
 
-      const composerDiv = document.createElement("div");
-      composerDiv.className = "composer";
-      composerDiv.innerHTML = `<h2>${name} ${family}</h2>
-        <p><strong>Stijl:</strong> ${style}</p>
-        <p><strong>Levensjaren:</strong> ${birth}–${death}</p>
-        <p>${narrative}</p>`;
+        // 🎵 Playlist view
+        const sortedSongs = songs.sort((a, b) => {
+          const dateA = new Date(a.querySelector("appenddate")?.textContent || "2000-01-01");
+          const dateB = new Date(b.querySelector("appenddate")?.textContent || "2000-01-01");
+          return dateB - dateA;
+        });
 
-      const relatedSongs = Array.from(songs).filter(song => 
-        song.querySelector("reference").textContent === id
-      );
+        sortedSongs.forEach((song, index) => {
+          const title = song.querySelector("title")?.textContent || "";
+          const artist = song.querySelector("artist")?.textContent || "";
+          const spotify = song.querySelector("spotify")?.textContent || "";
+          const narrative = song.querySelector("narrative")?.textContent || "";
+          const original = song.querySelector("original")?.textContent || "";
+          const translation = song.querySelector("translation")?.textContent || "";
+          const composerId = song.querySelector("reference")?.textContent || "";
+          const composer = composers.find(c => c.querySelector("ID")?.textContent === composerId);
+          const composerName = composer ? `${composer.querySelector("name")?.textContent} ${composer.querySelector("familyname")?.textContent}` : "";
 
-      relatedSongs.forEach(song => {
-        const title = song.querySelector("title").textContent;
-        const artist = song.querySelector("artist").textContent;
-        const spotify = song.querySelector("spotify").textContent;
-		const narrative = song.getElementsByTagName("narrative")[0]?.textContent || "";
-		const original = song.getElementsByTagName("original")[0]?.textContent || "";
-		const translation = song.getElementsByTagName("translation")[0]?.textContent || "";
+          const block = document.createElement("div");
+          block.className = "song-block";
 
-		}); // ← closes the forEach loop
-		
-        const songDiv = document.createElement("div");
-        songDiv.className = "song";
-        songDiv.innerHTML = `<h3>${title}</h3>
-          <p><strong>Artiest:</strong> ${artist}</p>
-          <p>${narrative}</p>
-		  <table class="lyrics">
-  			<tr>
-    			<th>Duits</th>
-    			<th>Nederlands</th>
-  			</tr>
- 			 ${original.split("<br>").map((line, i) => `
-   			<tr>
-      			<td>${line}</td>
-      			<td>${translation.split("<br>")[i] || ""}</td>
-    		</tr>
-  			`).join("")}
-		  </table>
-          <p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>`;
-        composerDiv.appendChild(songDiv);
+          const collapsed = document.createElement("div");
+          collapsed.className = "collapsed";
+          collapsed.textContent = `${composerName}: ${title}`;
+
+          const expanded = document.createElement("div");
+          expanded.className = "expanded";
+          expanded.style.display = index < 2 ? "block" : "none";
+          collapsed.style.display = index < 2 ? "none" : "block";
+
+          expanded.innerHTML = `
+            <h3>${title}</h3>
+            ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
+            <p>${narrative}</p>
+            ${original && translation ? `
+              <table class="lyrics">
+                <tr><th>Origineel</th><th>Vertaling</th></tr>
+                ${original.split("<br>").map((line, i) => `
+                  <tr>
+                    <td>${line}</td>
+                    <td>${translation.split("<br>")[i] || ""}</td>
+                  </tr>
+                `).join("")}
+              </table>
+            ` : ""}
+            ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
+          `;
+
+          const toggleBtn = document.createElement("button");
+          toggleBtn.textContent = "Sluit";
+          toggleBtn.onclick = () => {
+            expanded.style.display = "none";
+            collapsed.style.display = "block";
+          };
+          expanded.appendChild(toggleBtn);
+
+          collapsed.onclick = () => {
+            expanded.style.display = "block";
+            collapsed.style.display = "none";
+          };
+
+          block.appendChild(collapsed);
+          block.appendChild(expanded);
+          playlist.appendChild(block);
+        });
+
+        // 🎼 Composer view
+        composers.forEach(comp => {
+          const id = comp.querySelector("ID")?.textContent || "";
+          const name = comp.querySelector("name")?.textContent || "";
+          const family = comp.querySelector("familyname")?.textContent || "";
+          const style = comp.querySelector("style")?.textContent || "";
+          const birth = comp.querySelector("yearofbirth")?.textContent || "";
+          const death = comp.querySelector("yearofdeath")?.textContent || "";
+          const narrative = comp.querySelector("narrative")?.textContent || "";
+
+          const composerDiv = document.createElement("div");
+          composerDiv.className = "composer";
+          composerDiv.innerHTML = `
+            <h2>${name} ${family}</h2>
+            <p><strong>Stijl:</strong> ${style}</p>
+            <p><strong>Levensjaren:</strong> ${birth} – ${death}</p>
+            <p>${narrative}</p>
+          `;
+
+          const relatedSongs = songs.filter(song => song.querySelector("reference")?.textContent === id);
+          relatedSongs.forEach(song => {
+            const title = song.querySelector("title")?.textContent || "";
+            const artist = song.querySelector("artist")?.textContent || "";
+            const spotify = song.querySelector("spotify")?.textContent || "";
+            const narrative = song.querySelector("narrative")?.textContent || "";
+            const original = song.querySelector("original")?.textContent || "";
+            const translation = song.querySelector("translation")?.textContent || "";
+
+            const songDiv = document.createElement("div");
+            songDiv.className = "song";
+            songDiv.innerHTML = `
+              <h3>${title}</h3>
+              ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
+              <p>${narrative}</p>
+              ${original && translation ? `
+                <table class="lyrics">
+                  <tr><th>Origineel</th><th>Vertaling</th></tr>
+                  ${original.split("<br>").map((line, i) => `
+                    <tr>
+                      <td>${line}</td>
+                      <td>${translation.split("<br>")[i] || ""}</td>
+                    </tr>
+                  `).join("")}
+                </table>
+              ` : ""}
+              ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
+            `;
+            composerDiv.appendChild(songDiv);
+          });
+
+          content.appendChild(composerDiv);
+        });
       });
-
-      content.appendChild(composerDiv);
-    });	
-  });
   </script>
-
-<!-- Hier begint de playlist script -->
-<script> //playlist
-fetch('canon.xml')
-  .then(res => res.text())
-  .then(str => {
-    const xml = new DOMParser().parseFromString(str, "application/xml");
-
-    const composers = [...xml.getElementsByTagName("composer")];
-    const songs = [...xml.getElementsByTagName("song")];
-    const content = document.getElementById("content");
-
-    composers.forEach(comp => {
-      const id = comp.querySelector("ID").textContent.trim();
-      const name = comp.querySelector("name").textContent;
-      const family = comp.querySelector("familyname").textContent;
-      const style = comp.querySelector("style").textContent;
-      const birth = comp.querySelector("yearofbirth").textContent;
-      const death = comp.querySelector("yearofdeath").textContent;
-      const narrativeRaw = comp.querySelector("narrative")?.textContent || "";
-      const narrative = narrativeRaw.replace(/\n/g, "<br>");
-
-      const composerDiv = document.createElement("div");
-      composerDiv.className = "composer";
-      composerDiv.innerHTML = `
-        <h2>${name} ${family}</h2>
-        <p><strong>Stijl:</strong> ${style}</p>
-        <p><strong>Levensjaren:</strong> ${birth} – ${death}</p>
-        <p>${narrative}</p>
-      `;
-
-      const relatedSongs = songs.filter(song => song.querySelector("reference").textContent.trim() === id);
-
-      relatedSongs.forEach(song => {
-        const title = song.querySelector("title").textContent;
-        const artist = song.querySelector("artist")?.textContent || "";
-        const spotify = song.querySelector("spotify")?.textContent || "";
-        const narrativeRaw = song.querySelector("narrative")?.textContent || "";
-        const narrative = narrativeRaw.replace(/\n/g, "<br>");
-        const original = song.querySelector("original")?.textContent || "";
-        const translation = song.querySelector("translation")?.textContent || "";
-
-        const songDiv = document.createElement("div");
-        songDiv.className = "song";
-        songDiv.innerHTML = `
-          <h3>${title}</h3>
-          ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
-          <p>${narrative}</p>
-          ${original && translation ? `
-            <table class="lyrics">
-              <tr><th>Origineel</th><th>Vertaling</th></tr>
-              ${original.split("<br>").map((line, i) => `
-                <tr>
-                  <td>${line}</td>
-                  <td>${translation.split("<br>")[i] || ""}</td>
-                </tr>
-              `).join("")}
-            </table>
-          ` : ""}
-          ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
-        `;
-        composerDiv.appendChild(songDiv);
-      });
-
-      content.appendChild(composerDiv);
-    });
-  });
-</script>
-
-
 </body>
 </html>
 
