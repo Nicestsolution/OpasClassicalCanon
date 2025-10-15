@@ -141,7 +141,7 @@
 
           expanded.innerHTML = `
             <p style="font-size: 0.9rem; margin-bottom: 0.2rem;">
-            ${composerName} (${lifeSpan})
+            $<strong>{composerName}</strong> (${lifeSpan})
             </p>
             <h3>${title}</h3>
             ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
@@ -234,6 +234,7 @@
   </script>
 </body>
 </html>
+
 
 
 
