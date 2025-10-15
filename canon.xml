@@ -10,7 +10,7 @@
       <yearofdeath>1805</yearofdeath>
       <placeofbirth>Lucca, Italië</placeofbirth>
       <placeofdeath>Madrid</placeofdeath>
-      <narrative>Luigi Boccherini is geboren in Italie, maar werkte voornamelijk voor Spaanse vorsten.</narrative>
+      <narrative><![CDATA[Luigi Boccherini is geboren in Italie, maar werkte voornamelijk voor Spaanse vorsten.</narrative>]]>
     </composer>
     <composer>
       <ID>brahms1833</ID>
@@ -96,3 +96,4 @@
   </music>
 
 </canon>
+
