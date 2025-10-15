@@ -130,7 +130,19 @@
           expanded.style.display = index < 2 ? "block" : "none";
           collapsed.style.display = index < 2 ? "none" : "block";
 
+          const birthPlace = composer.querySelector("birthplace")?.textContent || "";
+          const birthYear = composer.querySelector("yearofbirth")?.textContent || "";
+          const deathPlace = composer.querySelector("deathplace")?.textContent || "";
+          const deathYear = composer.querySelector("yearofdeath")?.textContent || "";
+
+          const lifeSpan = deathYear
+            ? `${birthPlace}: ${birthYear} – ${deathPlace}: ${deathYear}`
+            : `${birthPlace}: ${birthYear} – heden`;
+
           expanded.innerHTML = `
+            <p style="font-size: 0.9rem; margin-bottom: 0.2rem;">
+            ${composerName} (${lifeSpan})
+            </p>
             <h3>${title}</h3>
             ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
             <p>${narrative}</p>
@@ -222,6 +234,7 @@
   </script>
 </body>
 </html>
+
 
 
 
