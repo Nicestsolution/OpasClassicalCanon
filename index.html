@@ -130,9 +130,9 @@
           expanded.style.display = index < 2 ? "block" : "none";
           collapsed.style.display = index < 2 ? "none" : "block";
 
-          const birthPlace = composer.querySelector("birthplace")?.textContent || "";
+          const birthPlace = composer.querySelector("placeofbirth")?.textContent || "";
           const birthYear = composer.querySelector("yearofbirth")?.textContent || "";
-          const deathPlace = composer.querySelector("deathplace")?.textContent || "";
+          const deathPlace = composer.querySelector("placeofdeath")?.textContent || "";
           const deathYear = composer.querySelector("yearofdeath")?.textContent || "";
 
           const lifeSpan = deathYear
@@ -234,6 +234,7 @@
   </script>
 </body>
 </html>
+
 
 
 
