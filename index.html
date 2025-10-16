@@ -147,175 +147,179 @@
   <div id="playlist"></div>
   <div id="content"></div>
 
-  <script>
-    fetch('canon.xml')
-      .then(res => res.text())
-      .then(str => {
-        const xml = new DOMParser().parseFromString(str, "application/xml");
-        const composers = [...xml.getElementsByTagName("composer")];
-        const songs = [...xml.getElementsByTagName("song")];
+<script>
+  const playlist = document.getElementById("playlist");
+  const content = document.getElementById("content");
+  let composers = [];
+  let songs = [];
 
-        const playlist = document.getElementById("playlist");
-        const content = document.getElementById("content");
-
-        // 🎵 Playlist view
-        function renderPlaylist(selectedPlaylist) {
-  playlist.innerHTML = "";
-
-  const filteredSongs = sortedSongs.filter(song => {
-    const pl = song.querySelector("playlist")?.textContent || "canon";
-    return pl === selectedPlaylist;
-  });
-
-  filteredSongs.forEach((song, index) => {
-    const title = song.querySelector("title")?.textContent || "";
-    const artist = song.querySelector("artist")?.textContent || "";
-    const spotify = song.querySelector("spotify")?.textContent || "";
-    const narrative = song.querySelector("narrative")?.textContent || "";
-    const original = song.querySelector("original")?.textContent || "";
-    const translation = song.querySelector("translation")?.textContent || "";
-    const composerId = song.querySelector("reference")?.textContent || "";
-    const composer = composers.find(c => c.querySelector("ID")?.textContent === composerId);
-    const composerName = composer ? `${composer.querySelector("name")?.textContent} ${composer.querySelector("familyname")?.textContent}` : "";
-
-    const block = document.createElement("div");
-    block.className = "song-block";
-
-    const collapsed = document.createElement("div");
-    collapsed.className = "collapsed";
-    collapsed.textContent = `${composerName}: ${title}`;
-
-    const expanded = document.createElement("div");
-    expanded.className = "expanded";
-    expanded.style.display = index < 2 ? "block" : "none";
-    collapsed.style.display = index < 2 ? "none" : "block";
-
-    const birthPlace = composer?.querySelector("placeofbirth")?.textContent || "";
-    const birthYear = composer?.querySelector("yearofbirth")?.textContent || "";
-    const deathPlace = composer?.querySelector("placeofdeath")?.textContent || "";
-    const deathYear = composer?.querySelector("yearofdeath")?.textContent || "";
-    const lifeSpan = deathYear
-      ? `${birthPlace}: ${birthYear} – ${deathPlace}: ${deathYear}`
-      : `${birthPlace}: ${birthYear} – heden`;
-
-    expanded.innerHTML = `
-      <p style="font-size: 0.9rem; margin-bottom: 0.2rem;">
-        <strong>${composerName}</strong> (${lifeSpan})
-      </p>
-      <h3>${title}</h3>
-      ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
-      <p>${narrative}</p>
-      ${original && translation ? `
-        <table class="lyrics">
-          <tr><th>Origineel</th><th>Vertaling</th></tr>
-          ${original.split("<br>").map((line, i) => `
-            <tr>
-              <td>${line}</td>
-              <td>${translation.split("<br>")[i] || ""}</td>
-            </tr>
-          `).join("")}
-        </table>
-      ` : ""}
-      ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
-    `;
-
-    const toggleBtn = document.createElement("button");
-    toggleBtn.textContent = "Sluit";
-    toggleBtn.onclick = () => {
-      expanded.style.display = "none";
-      collapsed.style.display = "block";
-    };
-    expanded.appendChild(toggleBtn);
-
-    collapsed.onclick = () => {
-      expanded.style.display = "block";
-      collapsed.style.display = "none";
-    };
-
-    block.appendChild(collapsed);
-    block.appendChild(expanded);
-    playlist.appendChild(block);
-  });
-}
-
-function updatePlaylist() {
-  const selected = document.getElementById("playlistSelector").value;
-  renderPlaylist(selected);
-  showSection("playlist");
-}
-
-function showSection(section) {
-  document.getElementById("playlist").style.display = section === "playlist" ? "block" : "none";
-  document.getElementById("content").style.display = section === "content" ? "block" : "none";
-}
-
-
-        // 🎼 Composer view
-        composers.forEach(comp => {
-          const id = comp.querySelector("ID")?.textContent || "";
-          const name = comp.querySelector("name")?.textContent || "";
-          const family = comp.querySelector("familyname")?.textContent || "";
-          const style = comp.querySelector("style")?.textContent || "";
-          const birth = comp.querySelector("yearofbirth")?.textContent || "";
-          const death = comp.querySelector("yearofdeath")?.textContent || "";
-          const narrative = comp.querySelector("narrative")?.textContent || "";
-
-          const composerDiv = document.createElement("div");
-          composerDiv.className = "composer";
-          composerDiv.innerHTML = `
-            <h2>${name} ${family}</h2>
-            <p><strong>Stijl:</strong> ${style}</p>
-            <p><strong>Levensjaren:</strong> ${birth} – ${death}</p>
-            <p>${narrative}</p>
-          `;
-
-          const relatedSongs = songs.filter(song => song.querySelector("reference")?.textContent === id);
-          relatedSongs.forEach(song => {
-            const title = song.querySelector("title")?.textContent || "";
-            const artist = song.querySelector("artist")?.textContent || "";
-            const spotify = song.querySelector("spotify")?.textContent || "";
-            const narrative = song.querySelector("narrative")?.textContent || "";
-            const original = song.querySelector("original")?.textContent || "";
-            const translation = song.querySelector("translation")?.textContent || "";
-
-            const songDiv = document.createElement("div");
-            songDiv.className = "song";
-            songDiv.innerHTML = `
-              <h3>${title}</h3>
-              ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
-              <p>${narrative}</p>
-              ${original && translation ? `
-                <table class="lyrics">
-                  <tr><th>Origineel</th><th>Vertaling</th></tr>
-                  ${original.split("<br>").map((line, i) => `
-                    <tr>
-                      <td>${line}</td>
-                      <td>${translation.split("<br>")[i] || ""}</td>
-                    </tr>
-                  `).join("")}
-                </table>
-              ` : ""}
-              ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
-            `;
-            composerDiv.appendChild(songDiv);
-          });
-
-          content.appendChild(composerDiv);
-        });
-      });
-  </script>
-  <script>
   function showSection(section) {
-    document.getElementById("playlist").style.display = section === "playlist" ? "block" : "none";
-    document.getElementById("content").style.display = section === "content" ? "block" : "none";
+    playlist.style.display = section === "playlist" ? "block" : "none";
+    content.style.display = section === "content" ? "block" : "none";
   }
 
-  // Default: toon playlist
-  showSection("playlist");
+  function updatePlaylist() {
+    const selected = document.getElementById("playlistSelector").value;
+    renderPlaylist(selected);
+    showSection("playlist");
+  }
+
+  function renderPlaylist(selectedPlaylist) {
+    playlist.innerHTML = "";
+
+    const filteredSongs = songs
+      .sort((a, b) => {
+        const dateA = new Date(a.querySelector("appenddate")?.textContent || "2000-01-01");
+        const dateB = new Date(b.querySelector("appenddate")?.textContent || "2000-01-01");
+        return dateB - dateA;
+      })
+      .filter(song => {
+        const pl = song.querySelector("playlist")?.textContent || "canon";
+        return pl === selectedPlaylist;
+      });
+
+    filteredSongs.forEach((song, index) => {
+      const title = song.querySelector("title")?.textContent || "";
+      const artist = song.querySelector("artist")?.textContent || "";
+      const spotify = song.querySelector("spotify")?.textContent || "";
+      const narrative = song.querySelector("narrative")?.textContent || "";
+      const original = song.querySelector("original")?.textContent || "";
+      const translation = song.querySelector("translation")?.textContent || "";
+      const composerId = song.querySelector("reference")?.textContent || "";
+      const composer = composers.find(c => c.querySelector("ID")?.textContent === composerId);
+      const composerName = composer ? `${composer.querySelector("name")?.textContent} ${composer.querySelector("familyname")?.textContent}` : "";
+      const birthPlace = composer?.querySelector("placeofbirth")?.textContent || "";
+      const birthYear = composer?.querySelector("yearofbirth")?.textContent || "";
+      const deathPlace = composer?.querySelector("placeofdeath")?.textContent || "";
+      const deathYear = composer?.querySelector("yearofdeath")?.textContent || "";
+      const lifeSpan = deathYear
+        ? `${birthPlace}: ${birthYear} – ${deathPlace}: ${deathYear}`
+        : `${birthPlace}: ${birthYear} – heden`;
+
+      const block = document.createElement("div");
+      block.className = "song-block";
+
+      const collapsed = document.createElement("div");
+      collapsed.className = "collapsed";
+      collapsed.textContent = `${composerName}: ${title}`;
+
+      const expanded = document.createElement("div");
+      expanded.className = "expanded";
+      expanded.style.display = index < 2 ? "block" : "none";
+      collapsed.style.display = index < 2 ? "none" : "block";
+
+      expanded.innerHTML = `
+        <p style="font-size: 0.9rem; margin-bottom: 0.2rem;">
+          <strong>${composerName}</strong> (${lifeSpan})
+        </p>
+        <h3>${title}</h3>
+        ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
+        <p>${narrative}</p>
+        ${original && translation ? `
+          <table class="lyrics">
+            <tr><th>Origineel</th><th>Vertaling</th></tr>
+            ${original.split("<br>").map((line, i) => `
+              <tr>
+                <td>${line}</td>
+                <td>${translation.split("<br>")[i] || ""}</td>
+              </tr>
+            `).join("")}
+          </table>
+        ` : ""}
+        ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
+      `;
+
+      const toggleBtn = document.createElement("button");
+      toggleBtn.textContent = "Sluit";
+      toggleBtn.onclick = () => {
+        expanded.style.display = "none";
+        collapsed.style.display = "block";
+      };
+      expanded.appendChild(toggleBtn);
+
+      collapsed.onclick = () => {
+        expanded.style.display = "block";
+        collapsed.style.display = "none";
+      };
+
+      block.appendChild(collapsed);
+      block.appendChild(expanded);
+      playlist.appendChild(block);
+    });
+  }
+
+  function renderComposers() {
+    content.innerHTML = "";
+
+    composers.forEach(comp => {
+      const id = comp.querySelector("ID")?.textContent || "";
+      const name = comp.querySelector("name")?.textContent || "";
+      const family = comp.querySelector("familyname")?.textContent || "";
+      const style = comp.querySelector("style")?.textContent || "";
+      const birth = comp.querySelector("yearofbirth")?.textContent || "";
+      const death = comp.querySelector("yearofdeath")?.textContent || "";
+      const narrative = comp.querySelector("narrative")?.textContent || "";
+
+      const composerDiv = document.createElement("div");
+      composerDiv.className = "composer";
+      composerDiv.innerHTML = `
+        <h2>${name} ${family}</h2>
+        <p><strong>Stijl:</strong> ${style}</p>
+        <p><strong>Levensjaren:</strong> ${birth} – ${death || "heden"}</p>
+        <p>${narrative}</p>
+      `;
+
+      const relatedSongs = songs.filter(song => song.querySelector("reference")?.textContent === id);
+      relatedSongs.forEach(song => {
+        const title = song.querySelector("title")?.textContent || "";
+        const artist = song.querySelector("artist")?.textContent || "";
+        const spotify = song.querySelector("spotify")?.textContent || "";
+        const narrative = song.querySelector("narrative")?.textContent || "";
+        const original = song.querySelector("original")?.textContent || "";
+        const translation = song.querySelector("translation")?.textContent || "";
+
+        const songDiv = document.createElement("div");
+        songDiv.className = "song";
+        songDiv.innerHTML = `
+          <h3>${title}</h3>
+          ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
+          <p>${narrative}</p>
+          ${original && translation ? `
+            <table class="lyrics">
+              <tr><th>Origineel</th><th>Vertaling</th></tr>
+              ${original.split("<br>").map((line, i) => `
+                <tr>
+                  <td>${line}</td>
+                  <td>${translation.split("<br>")[i] || ""}</td>
+                </tr>
+              `).join("")}
+            </table>
+          ` : ""}
+          ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
+        `;
+        composerDiv.appendChild(songDiv);
+      });
+
+      content.appendChild(composerDiv);
+    });
+  }
+
+  fetch('canon.xml')
+    .then(res => res.text())
+    .then(str => {
+      const xml = new DOMParser().parseFromString(str, "application/xml");
+      composers = [...xml.getElementsByTagName("composer")];
+      songs = [...xml.getElementsByTagName("song")];
+
+      renderComposers();
+      renderPlaylist("canon");
+      showSection("playlist");
+    });
 </script>
 
 </body>
 </html>
+
 
 
 
