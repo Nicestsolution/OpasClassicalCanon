@@ -165,88 +165,94 @@
   }
 
   function renderPlaylist(selectedPlaylist) {
-    playlist.innerHTML = "";
+  playlist.innerHTML = "";
 
-    const filteredSongs = songs
-      .sort((a, b) => {
-        const dateA = new Date(a.querySelector("appenddate")?.textContent || "2000-01-01");
-        const dateB = new Date(b.querySelector("appenddate")?.textContent || "2000-01-01");
-        return dateB - dateA;
-      })
-      .filter(song => {
-        const pl = song.querySelector("playlist")?.textContent || "canon";
-        return pl === selectedPlaylist;
-      });
-
-    filteredSongs.forEach((song, index) => {
-      const title = song.querySelector("title")?.textContent || "";
-      const artist = song.querySelector("artist")?.textContent || "";
-      const spotify = song.querySelector("spotify")?.textContent || "";
-      const narrative = song.querySelector("narrative")?.textContent || "";
-      const original = song.querySelector("original")?.textContent || "";
-      const translation = song.querySelector("translation")?.textContent || "";
-      const composerId = song.querySelector("reference")?.textContent || "";
-      const composer = composers.find(c => c.querySelector("ID")?.textContent === composerId);
-      const composerName = composer ? `${composer.querySelector("name")?.textContent} ${composer.querySelector("familyname")?.textContent}` : "";
-      const birthPlace = composer?.querySelector("placeofbirth")?.textContent || "";
-      const birthYear = composer?.querySelector("yearofbirth")?.textContent || "";
-      const deathPlace = composer?.querySelector("placeofdeath")?.textContent || "";
-      const deathYear = composer?.querySelector("yearofdeath")?.textContent || "";
-      const lifeSpan = deathYear
-        ? `${birthPlace}: ${birthYear} – ${deathPlace}: ${deathYear}`
-        : `${birthPlace}: ${birthYear} – heden`;
-
-      const block = document.createElement("div");
-      block.className = "song-block";
-
-      const collapsed = document.createElement("div");
-      collapsed.className = "collapsed";
-      collapsed.textContent = `${composerName}: ${title}`;
-
-      const expanded = document.createElement("div");
-      expanded.className = "expanded";
-      expanded.style.display = index < 2 ? "block" : "none";
-      collapsed.style.display = index < 2 ? "none" : "block";
-
-      expanded.innerHTML = `
-        <p style="font-size: 0.9rem; margin-bottom: 0.2rem;">
-          <strong>${composerName}</strong> (${lifeSpan})
-        </p>
-        <h3>${title}</h3>
-        ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
-        <p>${narrative}</p>
-        ${original && translation ? `
-          <table class="lyrics">
-            <tr><th>Origineel</th><th>Vertaling</th></tr>
-            ${original.split("<br>").map((line, i) => `
-              <tr>
-                <td>${line}</td>
-                <td>${translation.split("<br>")[i] || ""}</td>
-              </tr>
-            `).join("")}
-          </table>
-        ` : ""}
-        ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
-      `;
-
-      const toggleBtn = document.createElement("button");
-      toggleBtn.textContent = "Sluit";
-      toggleBtn.onclick = () => {
-        expanded.style.display = "none";
-        collapsed.style.display = "block";
-      };
-      expanded.appendChild(toggleBtn);
-
-      collapsed.onclick = () => {
-        expanded.style.display = "block";
-        collapsed.style.display = "none";
-      };
-
-      block.appendChild(collapsed);
-      block.appendChild(expanded);
-      playlist.appendChild(block);
+  const filteredSongs = songs
+    .sort((a, b) => {
+      const dateA = new Date(a.querySelector("appenddate")?.textContent || "2000-01-01");
+      const dateB = new Date(b.querySelector("appenddate")?.textContent || "2000-01-01");
+      return dateB - dateA;
+    })
+    .filter(song => {
+      const pl = song.querySelector("playlist")?.textContent.toLowerCase() || "canon";
+      return pl === selectedPlaylist.toLowerCase();
     });
-  }
+
+  filteredSongs.forEach((song, index) => {
+    const title = song.querySelector("title")?.textContent || "";
+    const artist = song.querySelector("artist")?.textContent || "";
+    const spotify = song.querySelector("spotify")?.textContent || "";
+    const narrative = song.querySelector("narrative")?.textContent || "";
+
+    // ✅ Lyrics ophalen uit songtext of direct
+    const original = song.querySelector("original")?.textContent ||
+                     song.querySelector("songtext > original")?.textContent || "";
+    const translation = song.querySelector("translation")?.textContent ||
+                        song.querySelector("songtext > translation")?.textContent || "";
+
+    const composerId = song.querySelector("reference")?.textContent || "";
+    const composer = composers.find(c => c.querySelector("ID")?.textContent === composerId);
+    const composerName = composer ? `${composer.querySelector("name")?.textContent} ${composer.querySelector("familyname")?.textContent}` : "";
+    const birthPlace = composer?.querySelector("placeofbirth")?.textContent || "";
+    const birthYear = composer?.querySelector("yearofbirth")?.textContent || "";
+    const deathPlace = composer?.querySelector("placeofdeath")?.textContent || "";
+    const deathYear = composer?.querySelector("yearofdeath")?.textContent || "";
+    const lifeSpan = deathYear
+      ? `${birthPlace}: ${birthYear} – ${deathPlace}: ${deathYear}`
+      : `${birthPlace}: ${birthYear} – heden`;
+
+    const block = document.createElement("div");
+    block.className = "song-block";
+
+    const collapsed = document.createElement("div");
+    collapsed.className = "collapsed";
+    collapsed.textContent = `${composerName}: ${title}`;
+
+    const expanded = document.createElement("div");
+    expanded.className = "expanded";
+    expanded.style.display = index < 2 ? "block" : "none";
+    collapsed.style.display = index < 2 ? "none" : "block";
+
+    expanded.innerHTML = `
+      <p style="font-size: 0.9rem; margin-bottom: 0.2rem;">
+        <strong>${composerName}</strong> (${lifeSpan})
+      </p>
+      <h3>${title}</h3>
+      ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
+      <p>${narrative}</p>
+      ${original && translation ? `
+        <table class="lyrics">
+          <tr><th>Origineel</th><th>Vertaling</th></tr>
+          ${original.split("<br>").map((line, i) => `
+            <tr>
+              <td>${line}</td>
+              <td>${translation.split("<br>")[i] || ""}</td>
+            </tr>
+          `).join("")}
+        </table>
+      ` : ""}
+      ${spotify ? `<p><a href="${spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
+    `;
+
+    const toggleBtn = document.createElement("button");
+    toggleBtn.textContent = "Sluit";
+    toggleBtn.onclick = () => {
+      expanded.style.display = "none";
+      collapsed.style.display = "block";
+    };
+    expanded.appendChild(toggleBtn);
+
+    collapsed.onclick = () => {
+      expanded.style.display = "block";
+      collapsed.style.display = "none";
+    };
+
+    block.appendChild(collapsed);
+    block.appendChild(expanded);
+    playlist.appendChild(block);
+  });
+}
+
 
   function renderComposers() {
     content.innerHTML = "";
@@ -319,6 +325,7 @@
 
 </body>
 </html>
+
 
 
 
