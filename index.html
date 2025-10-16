@@ -163,10 +163,19 @@
   }
 }
   function updatePlaylist() {
-    const selected = document.getElementById("playlistSelector").value;
-    renderPlaylist(selected);
-    showSection("playlist");
-  }
+  const selected = document.getElementById("playlistSelector").value;
+
+  fetch('canon.xml')
+    .then(res => res.text())
+    .then(str => {
+      const xml = new DOMParser().parseFromString(str, "application/xml");
+      composers = [...xml.getElementsByTagName("composer")];
+      songs = [...xml.getElementsByTagName("song")];
+      renderPlaylist(selected);
+      showSection("playlist");
+    });
+}
+
 
   function renderPlaylist(selectedPlaylist) {
   playlist.innerHTML = "";
@@ -329,6 +338,7 @@
 
 </body>
 </html>
+
 
 
 
