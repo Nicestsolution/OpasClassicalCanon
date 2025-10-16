@@ -58,6 +58,7 @@
         <month>10</month>
         <day>26</day>
       </appenddate>
+		<playlist>Canon</playlist>
     </song>
     <song>
       <ID>20241026a</ID>
@@ -96,9 +97,11 @@
         <month>10</month>
         <day>26</day>
       </appenddate>
+		<playlist>Canon</playlist>
     </song>
   </music>
 
 </canon>
+
 
 
