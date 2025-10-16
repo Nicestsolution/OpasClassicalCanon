@@ -135,17 +135,18 @@
 </head>
 <body>
   <h1>Opa's klassieke canon</h1>
- <nav id="menu">
+<nav id="menu">
   <select id="playlistSelector" onchange="updatePlaylist()">
     <option value="canon">🎵 Canon</option>
     <option value="kerstmis">🎄 Kerstmis</option>
     <option value="wiegelied">🛏️ Wiegelied</option>
   </select>
-  <button onclick="document.getElementById('playlistSelector').value='canon'; updatePlaylist();">🎵 Canon</button>
-  <button onclick="document.getElementById('playlistSelector').value='kerstmis'; updatePlaylist();">🎄 Kerstmis</button>
-  <button onclick="document.getElementById('playlistSelector').value='wiegelied'; updatePlaylist();">🛏️ Wiegelied</button>
+  <button onclick="selectPlaylist('canon')">🎵</button>
+  <button onclick="selectPlaylist('kerstmis')">🎄</button>
+  <button onclick="selectPlaylist('wiegelied')">🛏️</button>
   <button onclick="showSection('content')">🎼 Componisten</button>
 </nav>
+
 
   <div id="playlist"></div>
   <div id="content"></div>
@@ -165,6 +166,12 @@
     content.style.display = "block";
   }
 }
+  function selectPlaylist(name) {
+  const selector = document.getElementById("playlistSelector");
+  selector.value = name;
+  updatePlaylist();
+}
+
   function updatePlaylist() {
   const selected = document.getElementById("playlistSelector").value;
 
@@ -349,6 +356,7 @@
 
 </body>
 </html>
+
 
 
 
