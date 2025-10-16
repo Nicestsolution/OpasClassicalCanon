@@ -115,7 +115,8 @@
       <artist>Janine Jansen</artist>
       <spotify>https://open.spotify.com/track/1qpKMLztFXlRFSlGhjj1dZ?si=b54bddb21240433d</spotify>
       <narrative><![CDATA[Het is weer herfst, en dus tijd voor het laatste concert uit de vier jaargetijden, we zijn immers met de winter begonnen. Hieronder is het gedicht waarvan Vivaldi fragmenten bij de muziek schreef.]]></narrative>
-      <original><![CDATA[<i>Allegro</i><br>
+       <songtext>
+         <original><![CDATA[<i>Allegro</i><br>
 Celebra il Vilanel con balli e Canti<br>
 Del felice raccolto il bel piacere<br>
 E del liquor de Bacco accesi tanti<br>
@@ -155,6 +156,8 @@ Verschrikt en moe van het grote geluid<br>
 van honden en geweren, het beest, gewond,<br>
 sleept zich op de vlucht, maar sterft in wanhoop<br>
 ]]></translation>
+       </songtext>
     </song>
   </music>
 </canon>
+
