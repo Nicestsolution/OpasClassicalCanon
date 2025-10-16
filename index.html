@@ -165,17 +165,25 @@
   function updatePlaylist() {
   const selected = document.getElementById("playlistSelector").value;
 
-  fetch('canon.xml')
+  fetch("canon.xml")
     .then(res => res.text())
     .then(str => {
       const xml = new DOMParser().parseFromString(str, "application/xml");
+
+      // Vul composers en songs opnieuw
       composers = [...xml.getElementsByTagName("composer")];
       songs = [...xml.getElementsByTagName("song")];
+
+      // Render de juiste playlist
       renderPlaylist(selected);
+
+      // Toon de playlist-sectie
       showSection("playlist");
+    })
+    .catch(err => {
+      console.error("Fout bij laden van canon.xml:", err);
     });
 }
-
 
   function renderPlaylist(selectedPlaylist) {
   playlist.innerHTML = "";
@@ -338,6 +346,7 @@
 
 </body>
 </html>
+
 
 
 
