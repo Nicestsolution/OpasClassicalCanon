@@ -10,9 +10,7 @@
       <yearofdeath>1805</yearofdeath>
       <placeofbirth>Lucca, Italië</placeofbirth>
       <placeofdeath>Madrid</placeofdeath>
-      <narrative>
-	  <![CDATA[Luigi Boccherini is geboren in Italie, maar werkte voornamelijk voor Spaanse vorsten.]]>
-	  </narrative>
+      <narrative><![CDATA[Luigi Boccherini is geboren in Italie, maar werkte voornamelijk voor Spaanse vorsten.]]></narrative>
     </composer>
     <composer>
       <ID>brahms1833</ID>
@@ -23,9 +21,19 @@
       <yearofdeath>1897</yearofdeath>
       <placeofbirth>Heide, Duitsland (Holstein)</placeofbirth>
       <placeofdeath>Wenen</placeofdeath>
-      <narrative>
-	  <![CDATA[Johannes Brahms is een van de bekendste componisten uit het hoogtepunt van de romantiek. Lange melodische lijnen zijn karateristiek voor zijn muziek. Brahms was overigens ook belangrijk omdat hij de "oude" muziek van Johann Sebastian Bach weer onder de aandacht bracht.]]>
-	  </narrative>                                                   
+      <narrative><![CDATA[Johannes Brahms is een van de bekendste componisten uit het hoogtepunt van de romantiek. Lange melodische lijnen zijn karateristiek voor zijn muziek.]]></narrative>
+    </composer>
+    <composer>
+      <ID>vivaldi1678</ID>
+      <name>Antonio</name>
+      <familyname>Vivaldi</familyname>
+      <style>Barok</style>
+      <yearofbirth>1678</yearofbirth>
+      <placeofbirth>Venetië</placeofbirth>
+      <yearofdeath>1741</yearofdeath>
+      <placeofdeath>Wenen</placeofdeath>
+      <narrative><![CDATA[Vivaldi is één van de bekendste, in zijn tijd ook populairste, componisten van de late barok. Hij ontwikkelde het "concert" genre, een solo partij tegenover een enesmble (orkest). Het orkest bestaat in deze concerten alleen uit strijkers en klavecimbel (de lage strijkers, bijv. cello en een akkoordinstrument zoals een toetsinstrument of luit of iets dergelijks, worden in de barok aangeduid met “basso continuo”, te vergelijken met de bas en drumsectie in de huidige populaire muziek).
+]]></narrative>
     </composer>
   </composers>
   <music>
@@ -36,15 +44,14 @@
         <month>11</month>
         <day>01</day>
       </appenddate>
-		<playlist>Canon</playlist>
+      <playlist>Canon</playlist>
       <reference>boccherini1743</reference>
       <title>Menuet (Strijkkwintet in E, Op 11 No 5, deel III Menuet, Catalogus G 275)</title>
       <artist></artist>
       <spotify>https://open.spotify.com/track/7lv9BUinZDHRRpomNE36mF?si=a57433b5b51b4677</spotify>
       <narrative><![CDATA[En dan nu échte klassieke muziek. Vaak wordt alle oudere of “serieuze” muziek als klassieke muziek aangeduid, maar de échte klassieke muziek komt uit de periode van ongeveer 1730 tot 1820. De klassieke stijl is een reactie op de barok (met als hoogte- én eindpunt Johann Sebastian Bach, zijn zonen componeerden in de klassieke stijl) waarbij de polyfone muziek (met door elkaar lopende melodieën) plaats maakt voor één hoofdmelodie met een begeleiding. Vorm van de compositie wordt belangrijk. In deze periode ontstaan de moderne instrumenten als piano (pianoforte) en de klarinet, en vaste ensembles zoals het strijkkwartet (2 violen, altviool en cello).<br>
       De bekendste klassieke componist is natuurlijk Mozart.<br>
-      Luigi Boccherini's menuet, het derde deel uit een strijkwintet (2 violen, 1 altviool en 2 cellos) is verreweg zijn bekendste werk.]]>
-	  </narrative>
+      Luigi Boccherini's menuet, het derde deel uit een strijkwintet (2 violen, 1 altviool en 2 cellos) is verreweg zijn bekendste werk.]]></narrative>
     </song>
     <song>
       <ID>20241026b</ID>
@@ -52,13 +59,13 @@
       <title>Wiegenlied (5 Lieder Op 49 No 4)(cello en piano)</title>
       <artist>Yo-Yo Ma en Katryn Scot </artist>
       <spotify>https://open.spotify.com/track/5ynuusYL8dSrHK5fSjSqXO?si=d258a13e9e684c30</spotify>
-      <narrative><![CDATA[Maar deze versie voor cello spreekt misschien meer aan.]]> </narrative>
+      <narrative><![CDATA[Maar deze versie voor cello spreekt misschien meer aan.]]></narrative>
       <appenddate>
         <year>2024</year>
         <month>10</month>
         <day>26</day>
       </appenddate>
-		<playlist>Canon</playlist>
+      <playlist>Canon</playlist>
     </song>
     <song>
       <ID>20241026a</ID>
@@ -69,8 +76,7 @@
       <narrative><![CDATA[Waar anders te beginnen dan bij de melodie van het speeldoosje dat boven de wieg van Nelleke, Marianne en Frank heeft gehangen en waarbij ze ingeslapen zijn?<br>
         De oorspronkelijke versie is voor vrouwenstem en piano.]]></narrative>
       <songtext>
-        <original language="de">
-          <![CDATA[Guten Abend, gut' Nacht, mit Rosen bedacht,<br>
+        <original language="de"><![CDATA[Guten Abend, gut' Nacht, mit Rosen bedacht,<br>
           Mit Näglein besteckt, schlupf unter die Deck<br>
           Morgen früh, wenn Gott will, wirst du wieder geweckt<br>
           Morgen früh, wenn Gott will, wirst du wieder geweckt<br>
@@ -78,10 +84,8 @@
           Guten Abend, gute Nacht, von Englein bewacht,<br>
           Die zeigen im Traum dir Christkindleins Baum<br>
           Schlaf nun selig und süß, schau im Traum's Paradies<br>
-          Schlaf nun selig und süß, schau im Traum's Paradies]]>
-        </original>
-        <translation language="nl">
-          <![CDATA[Goedenavond, goedenacht, met rozen omringd<br>
+          Schlaf nun selig und süß, schau im Traum's Paradies]]></original>
+        <translation language="nl"><![CDATA[Goedenavond, goedenacht, met rozen omringd<br>
           Met nageltjes versierd, kruip onder de deken<br>
           Morgenvroeg, als God het wil, zul je weer wakker worden<br>
           Morgenvroeg, als God het wil, zul je weer wakker worden<br>
@@ -89,19 +93,68 @@
           Goedenavond, goedenacht, bewaakt door engelen,<br>
           Die je in je droom de boom van kindje Jezus tonen<br>
           Slaap nu zacht en zoet, kijk naar het paradijs in je droom<br>
-          Slaap nu zacht en zoet, kijk naar het paradijs in je droom]]>
-        </translation>
+          Slaap nu zacht en zoet, kijk naar het paradijs in je droom]]></translation>
       </songtext>
       <appenddate>
         <year>2024</year>
         <month>10</month>
         <day>26</day>
       </appenddate>
-		<playlist>Canon</playlist>
+      <playlist>Canon</playlist>
+    </song>
+    <song>
+      <ID>20251017</ID>
+      <appenddate>
+        <year>2025</year>
+        <month>10</month>
+        <day>16</day>
+      </appenddate>
+      <playlist>Canon</playlist>
+      <reference>vivaldi1678</reference>
+      <title>"De vier jaargetijden" Vioolconcert No 3 in F, Op 8 RV 293 L'autunno (de herfst)</title>
+      <artist>Janine Jansen</artist>
+      <spotify>https://open.spotify.com/track/1qpKMLztFXlRFSlGhjj1dZ?si=b54bddb21240433d</spotify>
+      <narrative><![CDATA[Het is weer herfst, en dus tijd voor het laatste concert uit de vier jaargetijden, we zijn immers met de winter begonnen. Hieronder is het gedicht waarvan Vivaldi fragmenten bij de muziek schreef.]]></narrative>
+      <original><![CDATA[<i>Allegro</i><br>
+Celebra il Vilanel con balli e Canti<br>
+Del felice raccolto il bel piacere<br>
+E del liquor de Bacco accesi tanti<br>
+Finiscono col Sonno il lor godere.<br>
+<br>
+<i>Adagio molto</i><br>
+Fà ch' ogn' uno tralasci e balli e canti<br>
+L' aria che temperata dà piacere,<br>
+E la Staggion ch' invita tanti e tanti<br>
+D' un dolcissimo Sonno al bel godere.<br>
+<br>
+<i>Allegro</i><br>
+cacciator alla nov' alba à caccia<br>
+Con corni, Schioppi, e cani escono fuore<br>
+Fugge la belva, e Seguono la traccia;<br>
+Già Sbigottita, e lassa al gran rumore<br>
+De' Schioppi e cani, ferita minaccia<br>
+Languida di fuggir, mà oppressa muore.<br>]]></original>
+      <translation><![CDATA[<i>Allegro</i><br>
+Viert de boer met zang en dans<br>
+Het plezier van een overvloedige oogst.<br>
+en gevoed door Bachus's drank<br>
+eindigen velen hun vrolijkheid in slaap<br>
+<br>
+<i>Adagio molto</i><br>
+Iedereen vergeet hun zorgen en zingt en danst<br>
+door de lucht die gevuld is met plezier<br>
+En het jaargetijde dat zo velen uitnodigt<br>
+uit hun zoetst gesluimer tot blijdschap<br>
+<br>
+<i>Allegro</i><br>
+De jagers komen te voorschijn bij zonsopgang<br>
+en met hoorns en honden en geweren<br>
+trekken zij op jacht<br>
+Het dier vlucht en zij volgen hun spoor<br>
+Verschrikt en moe van het grote geluid<br>
+van honden en geweren, het beest, gewond,<br>
+sleept zich op de vlucht, maar sterft in wanhoop<br>
+]]></translation>
     </song>
   </music>
-
 </canon>
-
-
-
