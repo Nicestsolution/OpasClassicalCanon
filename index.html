@@ -135,14 +135,17 @@
 </head>
 <body>
   <h1>Opa's klassieke canon</h1>
-  <nav id="menu">
-    <select id="playlistSelector" onchange="updatePlaylist()">
-      <option value="canon">🎵 Canon</option>
-      <option value="kerstmis">🎄 Kerstmis</option>
-      <option value="wiegelied">🛏️ Wiegelied</option>
-    </select>
-    <button onclick="showSection('content')">🎼 Componisten</button>
-  </nav>
+ <nav id="menu">
+  <select id="playlistSelector" onchange="updatePlaylist()">
+    <option value="canon">🎵 Canon</option>
+    <option value="kerstmis">🎄 Kerstmis</option>
+    <option value="wiegelied">🛏️ Wiegelied</option>
+  </select>
+  <button onclick="document.getElementById('playlistSelector').value='canon'; updatePlaylist();">🎵 Canon</button>
+  <button onclick="document.getElementById('playlistSelector').value='kerstmis'; updatePlaylist();">🎄 Kerstmis</button>
+  <button onclick="document.getElementById('playlistSelector').value='wiegelied'; updatePlaylist();">🛏️ Wiegelied</button>
+  <button onclick="showSection('content')">🎼 Componisten</button>
+</nav>
 
   <div id="playlist"></div>
   <div id="content"></div>
@@ -346,6 +349,7 @@
 
 </body>
 </html>
+
 
 
 
