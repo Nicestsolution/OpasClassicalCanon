@@ -44,7 +44,7 @@
         <month>11</month>
         <day>01</day>
       </appenddate>
-      <playlist>Canon</playlist>
+      <playlist>canon</playlist>
       <reference>boccherini1743</reference>
       <title>Menuet (Strijkkwintet in E, Op 11 No 5, deel III Menuet, Catalogus G 275)</title>
       <artist></artist>
@@ -65,7 +65,7 @@
         <month>10</month>
         <day>26</day>
       </appenddate>
-      <playlist>Canon</playlist>
+      <playlist>canon</playlist>
     </song>
     <song>
       <ID>20241026a</ID>
@@ -100,7 +100,7 @@
         <month>10</month>
         <day>26</day>
       </appenddate>
-      <playlist>Canon</playlist>
+      <playlist>canon</playlist>
     </song>
     <song>
       <ID>20251017</ID>
@@ -160,5 +160,6 @@ sleept zich op de vlucht, maar sterft in wanhoop<br>
     </song>
   </music>
 </canon>
+
 
 
