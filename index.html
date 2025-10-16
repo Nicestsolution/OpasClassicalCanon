@@ -169,8 +169,8 @@
     .then(res => res.text())
     .then(str => {
       const xml = new DOMParser().parseFromString(str, "application/xml");
-      composers = [...xml.getElementsByTagName("composer")];
-      songs = [...xml.getElementsByTagName("song")];
+      composers = [canon.xml.getElementsByTagName("composer")];
+      songs = [canon.xml.getElementsByTagName("song")];
       renderPlaylist(selected);
       showSection("playlist");
     });
@@ -338,6 +338,7 @@
 
 </body>
 </html>
+
 
 
 
