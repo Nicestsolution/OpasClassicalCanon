@@ -154,10 +154,14 @@
   let songs = [];
 
   function showSection(section) {
-    playlist.style.display = section === "playlist" ? "block" : "none";
-    content.style.display = section === "content" ? "block" : "none";
+  if (section === "playlist") {
+    playlist.style.display = "block";
+    content.style.display = "none";
+  } else if (section === "content") {
+    playlist.style.display = "none";
+    content.style.display = "block";
   }
-
+}
   function updatePlaylist() {
     const selected = document.getElementById("playlistSelector").value;
     renderPlaylist(selected);
@@ -325,6 +329,7 @@
 
 </body>
 </html>
+
 
 
 
