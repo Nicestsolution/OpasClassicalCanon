@@ -157,6 +157,33 @@
   let composers = [];
   let songs = [];
 
+  // Cross-browser veilige datum-parser.
+  // Safari kan problemen hebben met het rechtstreeks parsen van "YYYY-MM-DD".
+  // We maken daarom zelf een Date-object op basis van jaar/maand/dag wanneer mogelijk.
+  function parseDateSafe(text) {
+    if (!text) return new Date(2000, 0, 1);
+    // Probeer ISO YYYY-MM-DD
+    const iso = text.trim().match(/^(\\d{4})-(\\d{1,2})-(\\d{1,2})/);
+    if (iso) {
+      const y = parseInt(iso[1], 10);
+      const m = parseInt(iso[2], 10) - 1;
+      const d = parseInt(iso[3], 10);
+      return new Date(y, m, d);
+    }
+    // Probeer met slashes YYYY/MM/DD of andere vormen
+    const sl = text.trim().match(/^(\\d{4})/(\\d{1,2})/(\\d{1,2})/);
+    if (sl) {
+      const y = parseInt(sl[1], 10);
+      const m = parseInt(sl[2], 10) - 1;
+      const d = parseInt(sl[3], 10);
+      return new Date(y, m, d);
+    }
+    // Fallback: vervang '-' door '/' en laat Date.parse proberen
+    const normalized = text.replace(/-/g, '/');
+    const ts = Date.parse(normalized);
+    return isNaN(ts) ? new Date(2000, 0, 1) : new Date(ts);
+  }
+
   function showSection(section) {
   if (section === "playlist") {
     playlist.style.display = "block";
@@ -175,7 +202,7 @@
   function updatePlaylist() {
   const selected = document.getElementById("playlistSelector").value;
 
-  fetch("canon.xml")
+    fetch("canon.xml")
     .then(res => res.text())
     .then(str => {
       const xml = new DOMParser().parseFromString(str, "application/xml");
@@ -200,8 +227,11 @@
 
   const filteredSongs = songs
     .sort((a, b) => {
-      const dateA = new Date(a.querySelector("appenddate")?.textContent || "2000-01-01");
-      const dateB = new Date(b.querySelector("appenddate")?.textContent || "2000-01-01");
+      // Gebruik parseDateSafe voor cross-browser compatibele parsing (Safari fix)
+      const dateAText = a.querySelector("appenddate")?.textContent || "";
+      const dateBText = b.querySelector("appenddate")?.textContent || "";
+      const dateA = parseDateSafe(dateAText);
+      const dateB = parseDateSafe(dateBText);
       return dateB - dateA;
     })
     .filter(song => {
@@ -356,26 +386,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
