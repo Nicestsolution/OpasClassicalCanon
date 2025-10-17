@@ -163,26 +163,22 @@
 function parseDateSafe(text) {
   if (!text) return new Date(2000, 0, 1);
 
+  const s = text.trim();
+
   // YYYY-MM-DD
-  const iso = text.trim().match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-  if (iso) {
-    const y = parseInt(iso[1], 10);
-    const m = parseInt(iso[2], 10) - 1;
-    const d = parseInt(iso[3], 10);
-    return new Date(y, m, d);
-  }
+  const iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if (iso) return new Date(parseInt(iso[1],10), parseInt(iso[2],10)-1, parseInt(iso[3],10));
 
   // YYYY/MM/DD
-  const sl = text.trim().match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})/);
-  if (sl) {
-    const y = parseInt(sl[1], 10);
-    const m = parseInt(sl[2], 10) - 1;
-    const d = parseInt(sl[3], 10);
-    return new Date(y, m, d);
-  }
+  const sl = s.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})/);
+  if (sl) return new Date(parseInt(sl[1],10), parseInt(sl[2],10)-1, parseInt(sl[3],10));
+
+  // Normaliseer spaties/newlines (bijv. "2024\n 11\n 01") naar YYYY/MM/DD als mogelijk
+  const nums = s.match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
+  if (nums) return new Date(parseInt(nums[1],10), parseInt(nums[2],10)-1, parseInt(nums[3],10));
 
   // Fallback: vervang '-' door '/' en probeer Date.parse
-  const normalized = text.replace(/-/g, '/');
+  const normalized = s.replace(/-/g, '/').replace(/\s+/g, ' ');
   const ts = Date.parse(normalized);
   return isNaN(ts) ? new Date(2000, 0, 1) : new Date(ts);
 }
@@ -229,18 +225,39 @@ function parseDateSafe(text) {
   playlist.innerHTML = "";
 
   const filteredSongs = songs
-    .sort((a, b) => {
-      // Gebruik parseDateSafe voor cross-browser compatibele parsing (Safari fix)
-      const dateAText = a.querySelector("appenddate")?.textContent || "";
-      const dateBText = b.querySelector("appenddate")?.textContent || "";
-      const dateA = parseDateSafe(dateAText);
-      const dateB = parseDateSafe(dateBText);
-      return dateB - dateA;
-    })
-    .filter(song => {
-      const pl = song.querySelector("playlist")?.textContent.toLowerCase() || "canon";
-      return pl === selectedPlaylist.toLowerCase();
-    });
+  .sort((a, b) => {
+    function getAppendDate(song) {
+      const ad = song.querySelector('appenddate');
+      if (!ad) return new Date(2000,0,1);
+
+      // Als appenddate heeft child elementen <year>, <month>, <day>, gebruik die
+      const yEl = ad.querySelector('year');
+      const mEl = ad.querySelector('month');
+      const dEl = ad.querySelector('day');
+      if (yEl && mEl && dEl) {
+        const y = parseInt(yEl.textContent.trim(), 10) || 2000;
+        const m = Math.max(1, parseInt(mEl.textContent.trim(), 10) || 1) - 1;
+        const d = parseInt(dEl.textContent.trim(), 10) || 1;
+        return new Date(y, m, d);
+      }
+
+      // Anders: gebruik textContent en parseDateSafe
+      const txt = (ad.textContent || '').trim();
+      return parseDateSafe(txt);
+    }
+
+    const dateA = getAppendDate(a);
+    const dateB = getAppendDate(b);
+
+    // Debugging: (optioneel) console.log de parsed dates
+    // console.log('parsed dates', a.querySelector('ID')?.textContent, dateA, b.querySelector('ID')?.textContent, dateB);
+
+    return dateB - dateA;
+  })
+  .filter(song => {
+    const pl = song.querySelector("playlist")?.textContent.toLowerCase() || "canon";
+    return pl === selectedPlaylist.toLowerCase();
+  });
 
   filteredSongs.forEach((song, index) => {
     const title = song.querySelector("title")?.textContent || "";
