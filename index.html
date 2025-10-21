@@ -178,8 +178,7 @@ function parseDateSafe(text) {
   if (nums) return new Date(parseInt(nums[1],10), parseInt(nums[2],10)-1, parseInt(nums[3],10));
 
   // Fallback: vervang '-' door '/' en probeer Date.parse
-  const normalized = s.replace(/-/g, '/').replace(/
-/g, ' ');
+  const normalized = s.replace(/-/g, '/').replace(/\s+/g, ' ');
   const ts = Date.parse(normalized);
   return isNaN(ts) ? new Date(2000, 0, 1) : new Date(ts);
 }
