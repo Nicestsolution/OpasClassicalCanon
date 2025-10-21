@@ -187,6 +187,7 @@ function parseDateSafe(text) {
   } else if (section === "content") {
     playlist.style.display = "none";
     content.style.display = "block";
+	renderComposerTimeline();
   }
 }
   function selectPlaylist(name) {
@@ -356,7 +357,44 @@ function parseDateSafe(text) {
     playlist.appendChild(block);
   });
 }
+  function renderComposerTimeline() {
+  content.innerHTML = ''; // wis vorige inhoud
 
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", "100%");
+  svg.setAttribute("height", composers.length * 30 + 50);
+
+  const startYear = 1300;
+  const endYear = new Date().getFullYear();
+  const totalYears = endYear - startYear;
+  const svgWidth = 1000; // px
+  const yearToX = year => ((year - startYear) / totalYears) * svgWidth;
+
+  composers.forEach((composer, index) => {
+    const name = composer.querySelector("name")?.textContent || "Onbekend";
+    const birth = parseInt(composer.querySelector("birth")?.textContent || "1900");
+    const death = parseInt(composer.querySelector("death")?.textContent || (birth + 10));
+    const y = index * 30 + 20;
+
+    // Levenslijn
+    const line = document.createElementNS(svgNS, "rect");
+    line.setAttribute("x", yearToX(birth));
+    line.setAttribute("y", y);
+    line.setAttribute("width", yearToX(death) - yearToX(birth));
+    line.setAttribute("height", 10);
+    line.setAttribute("fill", "#003366");
+    svg.appendChild(line);
+
+    // Naam label
+    const label = document.createElementNS(svgNS, "text");
+    label.setAttribute("x", 5);
+    label.setAttribute("y", y + 8);
+    label.setAttribute("fill", "#000");
+    label.setAttribute("font-size", "12");
+    label.textContent = name;
+    svg.appendChild(label);
+  });
 
   function renderComposers() {
     content.innerHTML = "";
