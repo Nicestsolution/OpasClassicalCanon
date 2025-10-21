@@ -178,7 +178,8 @@ function parseDateSafe(text) {
   if (nums) return new Date(parseInt(nums[1],10), parseInt(nums[2],10)-1, parseInt(nums[3],10));
 
   // Fallback: vervang '-' door '/' en probeer Date.parse
-  const normalized = s.replace(/-/g, '/').replace(/\s+/g, ' ');
+  const normalized = s.replace(/-/g, '/').replace(/
+/g, ' ');
   const ts = Date.parse(normalized);
   return isNaN(ts) ? new Date(2000, 0, 1) : new Date(ts);
 }
@@ -282,6 +283,31 @@ function parseDateSafe(text) {
       ? `${birthPlace}: ${birthYear} – ${deathPlace}: ${deathYear}`
       : `${birthPlace}: ${birthYear} – heden`;
 
+    // Bepaal Appenddate en formatteer voor weergave onder de artiest
+    const adNode = song.querySelector('appenddate');
+    let appendDateText = "";
+    if (adNode) {
+      const yEl = adNode.querySelector('year');
+      const mEl = adNode.querySelector('month');
+      const dEl = adNode.querySelector('day');
+      let adDate;
+      if (yEl && mEl && dEl) {
+        const y = parseInt(yEl.textContent.trim(), 10) || 2000;
+        const m = Math.max(1, parseInt(mEl.textContent.trim(), 10) || 1) - 1;
+        const d = parseInt(dEl.textContent.trim(), 10) || 1;
+        adDate = new Date(y, m, d);
+      } else {
+        adDate = parseDateSafe(adNode.textContent || "");
+      }
+      // Format als bijv. "1 november 2024"
+      try {
+        appendDateText = `Toegevoegd: ${adDate.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}`;
+      } catch (e) {
+        // Fallback simpele ISO-datum
+        appendDateText = `Toegevoegd: ${adDate.getFullYear()}-${String(adDate.getMonth()+1).padStart(2,'0')}-${String(adDate.getDate()).padStart(2,'0')}`;
+      }
+    }
+
     const block = document.createElement("div");
     block.className = "song-block";
 
@@ -300,6 +326,7 @@ function parseDateSafe(text) {
       </p>
       <h3>${title}</h3>
       ${artist ? `<p><strong>Artiest:</strong> ${artist}</p>` : ""}
+      ${appendDateText ? `<p style="margin-top:0.2rem;"><em>${appendDateText}</em></p>` : ""}
       <p>${narrative}</p>
       ${original && translation ? `
         <table class="lyrics">
