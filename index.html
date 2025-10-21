@@ -362,20 +362,31 @@ function parseDateSafe(text) {
 
   const svgNS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(svgNS, "svg");
-  svg.setAttribute("width", "100%");
+  const containerWidth = content.clientWidth || 800; // fallback
+  svg.setAttribute("width", containerWidth);
   svg.setAttribute("height", composers.length * 30 + 50);
+  svg.style.border = "1px solid red";
 
   const startYear = 1300;
   const endYear = new Date().getFullYear();
   const totalYears = endYear - startYear;
   const svgWidth = 1000; // px
-  const yearToX = year => ((year - startYear) / totalYears) * svgWidth;
+  const yearToX = year => ((year - startYear) / totalYears) * containerWidth;
 
   composers.forEach((composer, index) => {
-    const name = composer.querySelector("name")?.textContent || "Onbekend";
-    const birth = parseInt(composer.querySelector("birth")?.textContent || "1900");
-    const death = parseInt(composer.querySelector("death")?.textContent || (birth + 10));
+    const name = composer.querySelector("familyname")?.textContent || "Onbekend";
+    const birth = parseInt(composer.querySelector("yearofbirth")?.textContent || "1900");
+    const death = parseInt(composer.querySelector("yearofdeath")?.textContent || (birth + 10));
     const y = index * 30 + 20;
+	
+	//Debugging
+	console.log({
+  name,
+  birth,
+  death,
+  x: yearToX(birth),
+  width: yearToX(death) - yearToX(birth)
+    });
 
     // Levenslijn
     const line = document.createElementNS(svgNS, "rect");
