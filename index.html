@@ -363,6 +363,8 @@ function parseDateSafe(text) {
 	const svgNS = "http://www.w3.org/2000/svg";
 	const svg = document.createElementNS(svgNS, "svg");
 	const containerWidth = content.clientWidth || 800; // fallback
+	const scaleWidth = 0.75 * containerWidth;
+	const nameWidth = 0.25 * containerWidth;
 	svg.setAttribute("width", containerWidth);
 	const svgHeight = composers.length * 30 + 50;
 	svg.setAttribute("height", svgHeight);
@@ -374,7 +376,7 @@ function parseDateSafe(text) {
 	const endYear = new Date().getFullYear();
 	const totalYears = Math.pow(endYear/startYear, scaleExp) - 1;
   // const svgWidth = 1000; // px
-	const yearToX = year => ((Math.pow(year/startYear,scaleExp) - 1) / totalYears) * containerWidth;
+	const yearToX = year => ((Math.pow(year/startYear,scaleExp) - 1) / totalYears) * scaleWidth + nameWidth;
 	 
 	const centuryMarks = [];
 
@@ -398,7 +400,7 @@ function parseDateSafe(text) {
 		// Label
 		const label = document.createElementNS(svgNS, "text");
 		label.setAttribute("x", x - 5);
-		label.setAttribute("y", 10); // bovenaan
+		label.setAttribute("y", 30); // bovenaan
 		label.setAttribute("transform", `rotate(-45 ${x - 5},10)`); // 45° linksom
 		label.setAttribute("font-size", "10");
 		label.setAttribute("fill", "#333");
@@ -417,7 +419,7 @@ function parseDateSafe(text) {
 		const name = composer.querySelector("familyname")?.textContent || "Onbekend";
 		const birth = parseInt(composer.querySelector("yearofbirth")?.textContent || "1900");
 		const death = parseInt(composer.querySelector("yearofdeath")?.textContent || (birth + 10));
-		const y = index * 30 + 20;
+		const y = index * 30 + 40;
 	
 	//Debugging
 		console.log({
