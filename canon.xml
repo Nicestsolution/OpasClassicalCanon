@@ -36,7 +36,7 @@
 ]]></narrative>
     </composer>
 <composer>
-  <ID>Bingen1098</ID>
+  <ID>bingen1098</ID>
   <name>Hildegard von</name>
   <familyname>Bingen</familyname>
   <style>Middeleeuws</style>
@@ -172,11 +172,11 @@ sleept zich op de vlucht, maar sterft in wanhoop<br>
   <ID>20250829</ID>
   <appenddate>
     <year>2025</year>
-    <month>10</month>
-    <day>22</day>
+    <month>08</month>
+    <day>29</day>
   </appenddate>
   <playlist>canon</playlist>
-  <reference>Bingen1098</reference>
+  <reference>bingen1098</reference>
   <title>Spiritus Sanctus Vivicans</title>
   <artist>Anna Sandström, Armonica Consort olv. Christopher Monks</artist>
   <spotify>https://open.spotify.com/track/1VLq3dI44nVnsZMJUShINZ?si=0b053f3e50c8443c</spotify>
@@ -200,4 +200,5 @@ rousing and reviving all.<br>
   </songtext>
 </song>
   </music>
+
 </canon>
