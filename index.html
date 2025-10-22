@@ -358,57 +358,73 @@ function parseDateSafe(text) {
   });
 }
   function renderComposerTimeline() {
-  content.innerHTML = ''; // wis vorige inhoud
+	content.innerHTML = ''; // wis vorige inhoud
 
-  const svgNS = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(svgNS, "svg");
-  const containerWidth = content.clientWidth || 800; // fallback
-  svg.setAttribute("width", containerWidth);
-  svg.setAttribute("height", composers.length * 30 + 50);
-  svg.style.border = "1px solid red";
+	const svgNS = "http://www.w3.org/2000/svg";
+	const svg = document.createElementNS(svgNS, "svg");
+	const containerWidth = content.clientWidth || 800; // fallback
+	svg.setAttribute("width", containerWidth);
+	svg.setAttribute("height", composers.length * 30 + 50);
+	svg.style.border = "1px solid red";
 
-  const startYear = 1300;
-  const endYear = new Date().getFullYear();
-  const totalYears = endYear - startYear;
-  const svgWidth = 1000; // px
-  const yearToX = year => ((year - startYear) / totalYears) * containerWidth;
-
-  composers.forEach((composer, index) => {
-    const name = composer.querySelector("familyname")?.textContent || "Onbekend";
-    const birth = parseInt(composer.querySelector("yearofbirth")?.textContent || "1900");
-    const death = parseInt(composer.querySelector("yearofdeath")?.textContent || (birth + 10));
-    const y = index * 30 + 20;
+	const startYear = 1000;
+	const scaleExp = 4;
+	const endYear = new Date().getFullYear();
+	const totalYears = Math.pow(endYear/startYear, scaleExp) - 1;
+  // const svgWidth = 1000; // px
+	const yearToX = year => ((Math.pow(year/startYear,scaleExp) - 1) / totalYears) * containerWidth;
+  
+	composers.sort((a, b) => {
+		const ay = parseInt(a.querySelector("yearofbirth")?.textContent || "0");
+		const by = parseInt(b.querySelector("yearofbirth")?.textContent || "0");
+		return ay - by;
+	});
+  
+	composers.forEach((composer, index) => {
+		const name = composer.querySelector("familyname")?.textContent || "Onbekend";
+		const birth = parseInt(composer.querySelector("yearofbirth")?.textContent || "1900");
+		const death = parseInt(composer.querySelector("yearofdeath")?.textContent || (birth + 10));
+		const y = index * 30 + 20;
 	
 	//Debugging
-	console.log({
-  name,
-  birth,
-  death,
-  x: yearToX(birth),
-  width: yearToX(death) - yearToX(birth)
-    });
+		console.log({
+			name,
+			birth,
+			death,
+			x: yearToX(birth),
+			width: yearToX(death) - yearToX(birth)
+		});
+		
+		const style = composer.querySelector("style")?.textContent.toLowerCase();
+		const colorMap = {
+			barok: "#8B0000",
+			klassiek: "#1E90FF",
+			romantiek: "#228B22",
+			modern: "#FF8C00"
+		};
+		const fillColor = colorMap[style] || "#555";
 
-    // Levenslijn
-    const line = document.createElementNS(svgNS, "rect");
-    line.setAttribute("x", yearToX(birth));
-    line.setAttribute("y", y);
-    line.setAttribute("width", yearToX(death) - yearToX(birth));
-    line.setAttribute("height", 10);
-    line.setAttribute("fill", "#003366");
-    svg.appendChild(line);
+		// Levenslijn
+		const line = document.createElementNS(svgNS, "rect");
+		line.setAttribute("x", yearToX(birth));
+		line.setAttribute("y", y);
+		line.setAttribute("width", yearToX(death) - yearToX(birth));
+		line.setAttribute("height", 10);
+		line.setAttribute("fill", fillColor);
+		svg.appendChild(line);
 
-    // Naam label
-    const label = document.createElementNS(svgNS, "text");
-    label.setAttribute("x", 5);
-    label.setAttribute("y", y + 8);
-    label.setAttribute("fill", "#000");
-    label.setAttribute("font-size", "12");
-    label.textContent = name;
-    svg.appendChild(label);
-  });
+		// Naam label
+		const label = document.createElementNS(svgNS, "text");
+		label.setAttribute("x", 5);
+		label.setAttribute("y", y + 8);
+		label.setAttribute("fill", "#000");
+		label.setAttribute("font-size", "12");
+		label.textContent = name;
+		svg.appendChild(label);
+	});
   
-  content.appendChild(svg);
-}
+	content.appendChild(svg);
+  }
 
   function renderComposers() {
     content.innerHTML = "";
