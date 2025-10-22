@@ -364,8 +364,10 @@ function parseDateSafe(text) {
 	const svg = document.createElementNS(svgNS, "svg");
 	const containerWidth = content.clientWidth || 800; // fallback
 	svg.setAttribute("width", containerWidth);
-	svg.setAttribute("height", composers.length * 30 + 50);
-	// svg.style.border = "1px solid red";
+	const svgHeight = composers.length * 30 + 50;
+	svg.setAttribute("height", svgHeight);
+	
+	svg.style.border = "1px solid red";
 
 	const startYear = 1000;
 	const scaleExp = 4;
