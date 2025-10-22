@@ -35,6 +35,18 @@
       <narrative><![CDATA[Vivaldi is één van de bekendste, in zijn tijd ook populairste, componisten van de late barok. Hij ontwikkelde het "concert" genre, een solo partij tegenover een enesmble (orkest). Het orkest bestaat in deze concerten alleen uit strijkers en klavecimbel (de lage strijkers, bijv. cello en een akkoordinstrument zoals een toetsinstrument of luit of iets dergelijks, worden in de barok aangeduid met “basso continuo”, te vergelijken met de bas en drumsectie in de huidige populaire muziek).
 ]]></narrative>
     </composer>
+<composer>
+  <ID>Bingen1098</ID>
+  <name>Hildegard von</name>
+  <familyname>Bingen</familyname>
+  <style>Middeleeuws</style>
+  <yearofbirth>1098</yearofbirth>
+  <placeofbirth>Alzey</placeofbirth>
+  <yearofdeath>1179</yearofdeath>
+  <placeofdeath>Bingen</placeofdeath>
+  <narrative><![CDATA[We gaan even door met vrouwelijke componisten in een door mannen gedomineerde kunst. Hildegard von Bingen kwam uit een adellijke familie maar werd vanaf haar 8ste jaar opgevoed in een klooster. Ze volgde haar leermeesteres op als moeder-overste. Ze was begaafd op veel gebieden en wordt gezien als de grondlegster van de Duitse mystiek. Zij had haar eigen manier om stand te houden in een mannenwereld: alles wat zij voortbracht in teks en muziek was gebaseerd op goddelijke visioene. Ondanks enige argwaan kreeg zij de steun van paus Eugenius III. Dus zij was niet een vrouwelijke kunstenaar/wetenschapper, maar slechts een medium van het goddelijke (slim bedacht?)<br>
+Zij heeft een groot oeuvre nagelaten, mogelijk gemaakt door de nauwlettende optekeining en opbewaring in de veilige omgeving van het klooster. Zij is (tot dusver) de vroegste componiost in Opa's Canon. Muziek was in die tijd voornamelijk eenstemmig, de kerkmuziek  gregoriaans. Von Bingen's muziek wijkt af van het echte gregoriaans maar is ook eenstemmig.]]></narrative>
+</composer>
   </composers>
   <music>
     <song>
@@ -44,7 +56,7 @@
         <month>11</month>
         <day>01</day>
       </appenddate>
-      <playlist>canon</playlist>
+      <playlist>Canon</playlist>
       <reference>boccherini1743</reference>
       <title>Menuet (Strijkkwintet in E, Op 11 No 5, deel III Menuet, Catalogus G 275)</title>
       <artist></artist>
@@ -65,7 +77,7 @@
         <month>10</month>
         <day>26</day>
       </appenddate>
-      <playlist>canon</playlist>
+      <playlist>Canon</playlist>
     </song>
     <song>
       <ID>20241026a</ID>
@@ -100,7 +112,7 @@
         <month>10</month>
         <day>26</day>
       </appenddate>
-      <playlist>canon</playlist>
+      <playlist>Canon</playlist>
     </song>
     <song>
       <ID>20251017</ID>
@@ -109,14 +121,13 @@
         <month>10</month>
         <day>16</day>
       </appenddate>
-      <playlist>canon</playlist>
+      <playlist>Canon</playlist>
       <reference>vivaldi1678</reference>
       <title>"De vier jaargetijden" Vioolconcert No 3 in F, Op 8 RV 293 L'autunno (de herfst)</title>
       <artist>Janine Jansen</artist>
       <spotify>https://open.spotify.com/track/1qpKMLztFXlRFSlGhjj1dZ?si=b54bddb21240433d</spotify>
       <narrative><![CDATA[Het is weer herfst, en dus tijd voor het laatste concert uit de vier jaargetijden, we zijn immers met de winter begonnen. Hieronder is het gedicht waarvan Vivaldi fragmenten bij de muziek schreef.]]></narrative>
-       <songtext>
-         <original><![CDATA[<i>Allegro</i><br>
+      <original><![CDATA[<i>Allegro</i><br>
 Celebra il Vilanel con balli e Canti<br>
 Del felice raccolto il bel piacere<br>
 E del liquor de Bacco accesi tanti<br>
@@ -156,10 +167,37 @@ Verschrikt en moe van het grote geluid<br>
 van honden en geweren, het beest, gewond,<br>
 sleept zich op de vlucht, maar sterft in wanhoop<br>
 ]]></translation>
-       </songtext>
-    </song>
+    </song>	
+<song>
+  <ID>20250829</ID>
+  <appenddate>
+    <year>2025</year>
+    <month>10</month>
+    <day>22</day>
+  </appenddate>
+  <playlist>canon</playlist>
+  <reference>Bingen1098</reference>
+  <title>Spiritus Sanctus Vivicans</title>
+  <artist>Anna Sandström, Armonica Consort olv. Christopher Monks</artist>
+  <spotify>https://open.spotify.com/track/1VLq3dI44nVnsZMJUShINZ?si=0b053f3e50c8443c</spotify>
+  <narrative><![CDATA[De muziek van von Bingen is eenstemmig, maar in deze uitvoering van Spritus Sanctus Vivicans (over de levengevende heilige geest) heeft men gekozen om de grondtoon onder de melodie te zingen, er zijn ook uitvoeringen zonder deze bastoon.]]></narrative>
+  <songtext>
+    <original><![CDATA[Spiritus sanctus vivificans<br>
+vita movens omnia,<br>
+et radix est in omni creatura<br>
+ac omnia de inmunditia abluit,<br>
+tergens crimina ac ungit vulnera,<br>
+et sic est fulgens ac laudabilis vita,<br>
+suscitans et resuscitans omnia.]]></original>
+    <translation><![CDATA[The Holy Spirit: living and life-giving,<br>
+the life that’s all things moving,<br>
+the root in all created being:<br>
+of filth and muck it washes all things clean—<br>
+out-scrubbing guilty staining, its balm our wounds constraining—<br>
+and so its life with praise is shining,<br>
+rousing and reviving all.<br>
+]]></translation>
+  </songtext>
+</song>
   </music>
 </canon>
-
-
-
