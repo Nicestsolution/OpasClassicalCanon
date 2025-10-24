@@ -111,7 +111,7 @@
     font-size: 1.2rem;
   }
 }
-#playlistSelector {
+#playlistSelector, #viewSelector {
   padding: 0.5rem 1rem;
   font-size: 1rem;
   background-color: #003366;
@@ -121,12 +121,12 @@
   cursor: pointer;
 }
 
-#playlistSelector option {
+#playlistSelector option, #viewSelector option {
   color: black;
 }
 
 @media (max-width: 600px) {
-  #playlistSelector {
+  #playlistSelector, #viewSelector {
     font-size: 1.2rem;
   }
 }
@@ -141,7 +141,10 @@
     <option value="kerstmis">🎄 Kerstmis</option>
     <option value="wiegelied">🛏️ Wiegelied</option>
   </select>
-  <button onclick="showSection('content')">🎼 Componisten</button>
+    <select id="viewSelector" onchange="updateView()">
+    <option value="composers">🎼 Componisten Lijst</option>
+    <option value="timeline">📅 Tijdlijn</option>
+  </select>
 </nav>
 
 
@@ -187,7 +190,6 @@ function parseDateSafe(text) {
   } else if (section === "content") {
     playlist.style.display = "none";
     content.style.display = "block";
-	renderComposerTimeline();
   }
 }
   function selectPlaylist(name) {
@@ -460,6 +462,17 @@ function parseDateSafe(text) {
   
 	content.appendChild(svg);
   }
+
+function updateView() {
+  	const view = document.getElementById('viewSelector').value;
+  	if (view === 'timeline') {
+    	showSection('content');
+    	renderComposerTimeline();
+  	} else {
+    	showSection('content');
+    	renderComposers();
+  	}
+}	
 
   function renderComposers() {
     content.innerHTML = "";
