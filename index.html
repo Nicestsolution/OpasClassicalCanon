@@ -411,7 +411,7 @@ function showComposerDetails(id, fromView) {
 }
 
 // Initialisatie: laad XML, parseer data, toon standaard playlist
-fetch('https://github.com/Nicestsolution/OpasClassicalCanon/blob/main/canon.xml')
+fetch('canon.xml')
   .then(response => response.text())
   .then(xmlText => {
     const parser = new DOMParser();
