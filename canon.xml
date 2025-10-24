@@ -1,6 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <canon>
   <composers>
+<composer>
+  <ID>suesse1909</ID>
+  <name>Dana</name>
+  <familyname>Suesse</familyname>
+  <style>Modern</style>
+  <yearofbirth>1909</yearofbirth>
+  <placeofbirth>Kansas City</placeofbirth>
+  <yearofdeath>1987</yearofdeath>
+  <placeofdeath>New York</placeofdeath>
+  <narrative><![CDATA[Dana Suesse was een natuurtalent en trad op jonge leeftijd in de Midwest o.a. door op de piano te improviseren. Ze verhuisde met haar moeder naar New York in 1926, waar ze piano en compositie studeerde, o.a. bij Rubin Goldmark, ook een leraar van Gershwin. Ze werd de "vrouwelijke Gerswhin" ("the girl Gershwin") genoemd en werd een gevierd componiste in zowel het lichte als klassieke repertoire. Tussen 1947 en 1950 studeerde ze in Frankrijk bij Nadia Boulanger. Ze schreef muziek voor o.a. Broadway producties, ballet, en concerten voor 2 pianos. ]]></narrative>
+</composer>
     <composer>
       <ID>boccherini1743</ID>
       <familyname>Boccherini</familyname>
@@ -36,7 +47,7 @@
 ]]></narrative>
     </composer>
 <composer>
-  <ID>bingen1098</ID>
+  <ID>Bingen1098</ID>
   <name>Hildegard von</name>
   <familyname>Bingen</familyname>
   <style>Middeleeuws</style>
@@ -172,11 +183,11 @@ sleept zich op de vlucht, maar sterft in wanhoop<br>
   <ID>20250829</ID>
   <appenddate>
     <year>2025</year>
-    <month>08</month>
-    <day>29</day>
+    <month>10</month>
+    <day>22</day>
   </appenddate>
   <playlist>canon</playlist>
-  <reference>bingen1098</reference>
+  <reference>Bingen1098</reference>
   <title>Spiritus Sanctus Vivicans</title>
   <artist>Anna Sandström, Armonica Consort olv. Christopher Monks</artist>
   <spotify>https://open.spotify.com/track/1VLq3dI44nVnsZMJUShINZ?si=0b053f3e50c8443c</spotify>
@@ -199,6 +210,23 @@ rousing and reviving all.<br>
 ]]></translation>
   </songtext>
 </song>
+<song>
+  <ID>20251024</ID>
+  <appenddate>
+    <year>2025</year>
+    <month>10</month>
+    <day>24</day>
+  </appenddate>
+  <playlist>canon</playlist>
+  <reference>suesse1909</reference>
+  <title>3 Compositions for the Piano: III Swamp Bird</title>
+  <artist>Vanessa Wagner</artist>
+  <spotify>https://open.spotify.com/track/1JvVQI68vzxajxAIvwmLxU?si=761f273f64b04699</spotify>
+  <narrative><![CDATA[Dana Suesse, "the girl Gershwin", schreef "3 Compositions for the Piano" in 1941. De muziek van Suesse glijdt van jazz tot deze impressionistische muziek, met een klank die doet denken aan Franse componisten zoals Tansman of Ibert.]]></narrative>
+  <songtext>
+    <original><![CDATA[]]></original>
+    <translation><![CDATA[]]></translation>
+  </songtext>
+</song>
   </music>
-
 </canon>
