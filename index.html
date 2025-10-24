@@ -141,9 +141,9 @@
     <option value="kerstmis">🎄 Kerstmis</option>
     <option value="wiegelied">🛏️ Wiegelied</option>
   </select>
-    <select id="viewSelector" onchange="updateView()">
+    <select id="viewSelector" onchange="updateView()" onclick="updateView()">
     <option value="composers">🎼 Componisten Lijst</option>
-    <option value="timeline">📅 Tijdlijn</option>
+    <option value="timeline">📅 Componisten Tijdlijn</option>
   </select>
 </nav>
 
@@ -448,6 +448,8 @@ function parseDateSafe(text) {
 		line.setAttribute("width", yearToX(death) - yearToX(birth));
 		line.setAttribute("height", 10);
 		line.setAttribute("fill", fillColor);
+		line,style.cursor = "pointer";
+		line.addEventListener('click', () => showComposerDetails(composer.name, 'timeline'));
 		svg.appendChild(line);
 
 		// Naam label
@@ -457,6 +459,8 @@ function parseDateSafe(text) {
 		label.setAttribute("fill", "#000");
 		label.setAttribute("font-size", "12");
 		label.textContent = name;
+		label.style.cursor = "pointer";
+        label.addEventListener('click', () => showComposerDetails(composer.name, 'timeline'));
 		svg.appendChild(label);
 	});
   
@@ -475,6 +479,7 @@ function updateView() {
 }	
 
   function renderComposers() {
+	playlist.innerHTML = '';
     content.innerHTML = "";
 
     composers.forEach(comp => {
@@ -494,7 +499,8 @@ function updateView() {
         <p><strong>Levensjaren:</strong> ${birth} – ${death || "heden"}</p>
         <p>${narrative}</p>
       `;
-
+	  composerDiv.querySelector('.composer-name').addEventListener('click', () => showComposerDetails(composer.name, 'composers'));
+		
       const relatedSongs = songs.filter(song => song.querySelector("reference")?.textContent === id);
       relatedSongs.forEach(song => {
         const title = song.querySelector("title")?.textContent || "";
@@ -529,7 +535,60 @@ function updateView() {
       content.appendChild(composerDiv);
     });
   }
+	// Toon details van een enkele componist
+    function showComposerDetails(name, fromView) {
+      showSection('content');
+      content.innerHTML = '';
+      const composer = composers.find(c => c.name === name);
+      if (!composer) {
+        content.textContent = 'Componist niet gevonden.';
+        return;
+      }
+      const detailDiv = document.createElement('div');
+      detailDiv.className = 'composer-detail';
+      detailDiv.innerHTML = `
+        <h2>${composer.name}</h2>
+        <p><em>${composer.style}</em> (${composer.birth} - ${composer.death})</p>
+        <p>${composer.description}</p>
+      `;
 
+      const composerSongs = songs.filter(song => song.composer === composer.name);
+      composerSongs.forEach(song => {
+        const songDiv = document.createElement('div');
+        songDiv.className = 'song';
+        songDiv.innerHTML = `
+          <h3>${song.title}</h3>
+          <p><em>${song.artist}</em></p>
+        `;
+        detailDiv.appendChild(songDiv);
+      });
+
+      const closeBtn = document.createElement('button');
+      closeBtn.textContent = 'Sluit';
+      closeBtn.style.marginTop = '1rem';
+      closeBtn.style.padding = '0.5rem 1rem';
+      closeBtn.style.fontSize = '1rem';
+      closeBtn.style.backgroundColor = '#003366';
+      closeBtn.style.color = 'white';
+      closeBtn.style.border = 'none';
+      closeBtn.style.borderRadius = '4px';
+      closeBtn.style.cursor = 'pointer';
+      closeBtn.addEventListener('click', () => {
+        if (fromView === 'timeline') {
+          updateView();
+        } else if (fromView === 'composers') {
+          updateView();
+        } else {
+          updatePlaylist();
+          showSection('playlist');
+        }
+      });
+
+      content.appendChild(detailDiv);
+      content.appendChild(closeBtn);
+    }
+
+  // Initialisatie: laad XML, parseer data, toon standaard playlist
   fetch('canon.xml')
     .then(res => res.text())
     .then(str => {
