@@ -107,13 +107,13 @@
 <h1>Opa's klassieke canon</h1>
 <nav id="menu">
   <select id="playlistSelector" onclick="updatePlaylist()" onchange="updatePlaylist()">
-    <option value="canon">🎵 Canon</option>
-    <option value="kerstmis">🎄 Kerstmis</option>
-    <option value="wiegelied">🛏️ Wiegelied</option>
+    <option value="canon">🎵 Speellijst Canon</option>
+    <option value="kerstmis">🎄 Speellijst Kerstmis</option>
+    <option value="wiegelied">🛏️ Speellijst Wiegelied</option>
   </select>
   <select id="viewSelector" onchange="updateView()" onclick="updateView()">
     <option value="composers">🎼 Componisten Lijst</option>
-    <option value="timeline">📅 Tijdlijn</option>
+    <option value="timeline">📅 Componisten Tijdlijn</option>
   </select>
 </nav>
 <div id="playlist"></div>
@@ -156,17 +156,31 @@ function updatePlaylist() {
   showSection('playlist');
 }
 
+function formatLifeSpan(composer) {
+  const birth = composer.birth || "";
+  const placeOfBirth = composer.placeofbirth || "";
+  const death = composer.death || "";
+  const placeOfDeath = composer.placeofdeath || "";
+  if (birth || death || placeOfBirth || placeOfDeath) {
+    if (!death) {
+      return `${placeOfBirth}: ${birth} – heden`;
+    }
+    return `${placeOfBirth}: ${birth} – ${placeOfDeath}: ${death}`;
+  }
+  return "";
+}
+
 function renderPlaylist(selectedPlaylist) {
   playlist.innerHTML = '';
   content.innerHTML = '';
   const filteredSongs = songs.filter(song => song.playlist === selectedPlaylist);
   filteredSongs.sort((a, b) => b.appenddate - a.appenddate);
   filteredSongs.forEach((song, index) => {
-    const composer = composers.find(c => c.id === song.composer);
+    const composer = composers.find(c => c.id === song.composerID);
     const composerName = composer ? `${composer.name}, ${composer.familyname}` : "Anoniem";
     const birth = composer ? composer.birth : "";
     const death = composer ? composer.death : "";
-    const lifeSpan = death ? `${birth} – ${death}` : `${birth} – heden`;
+    const lifeSpan = composer ? formatLifeSpan(composer) : "";
 
     const block = document.createElement("div");
     block.className = "song-block";
@@ -236,14 +250,15 @@ function renderComposers() {
   content.innerHTML = '';
   composers.forEach(composer => {
     const composerDiv = document.createElement('div');
+	const lifeSpan = composer ? formatLifeSpan(composer) : "";
     composerDiv.className = 'composer';
     composerDiv.innerHTML = `
       <h2 class="composer-name" style="cursor:pointer; color:#003366;">${composer.familyname}, ${composer.name}</h2>
-      <p><em>${composer.style}</em> (${composer.birth} - ${composer.death})</p>
+      <p><em>${composer.style}</em> (${lifeSpan})</p>
       <p>${composer.description}</p>
     `;
     composerDiv.querySelector('.composer-name').addEventListener('click', () => showComposerDetails(composer.id, 'composers'));
-    const composerSongs = songs.filter(song => song.composer === composer.id);
+    const composerSongs = songs.filter(song => song.composerID === composer.id);
     composerSongs.forEach(song => {
       const songDiv = document.createElement('div');
       songDiv.className = 'song';
@@ -368,9 +383,10 @@ function showComposerDetails(id, fromView) {
   }
   const detailDiv = document.createElement('div');
   detailDiv.className = 'composer-detail';
+  const lifeSpan = formatLifeSpan(composer);
   detailDiv.innerHTML = `
     <h2>${composer.name}, ${composer.familyname}</h2>
-    <p><em>${composer.style}</em> (${composer.birth} - ${composer.death})</p>
+    <p><em>${composer.style}</em> (${lifeSpan})</p>
     <p>${composer.description}</p>
   `;
 
@@ -410,6 +426,11 @@ function showComposerDetails(id, fromView) {
   content.appendChild(closeBtn);
 }
 
+function getTextContent(parent, selector) {
+  const el = parent.querySelector(selector);
+  return el ? el.textContent : "";
+}
+
 // Initialisatie: laad XML, parseer data, toon standaard playlist
 fetch('canon.xml')
   .then(response => response.text())
@@ -417,27 +438,27 @@ fetch('canon.xml')
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "application/xml");
     composers = Array.from(xmlDoc.querySelectorAll('composer')).map(c => ({
-      id: c.getAttribute('id'),
-      name: c.querySelector('name').textContent,
-      familyname: c.querySelector('familyname').textContent,
-      style: c.querySelector('style').textContent,
-      birth: parseInt(c.querySelector('yearofbirth').textContent, 10),
-	  placeofbirth: parseInt(c.querySelector('placeofbirth').textContent, 10),
-      death: parseInt(c.querySelector('yearofdeath').textContent, 10),
-	  placeofdeath: parseInt(c.querySelector('placeofdeath').textContent, 10),
-      description: c.querySelector('narrative').textContent,
-      color: c.querySelector('color') ? c.querySelector('color').textContent : '#888'
+		id: 		getTextContent(c, "id"),
+		name: 		getTextContent(c, "name"),
+		familyname: getTextContent(c, "familyname"),
+		style: 		getTextContent(c, "style"),
+		birth: 		getTextContent(c, "yearofbirth"), 
+		placeofbirth: getTextContent(c, "placeofbirth"),
+		death: 		getTextContent(c, "yearofdeath"), 
+		placeofdeath: getTextContent(c, "placeofdeath"),
+		description: getTextContent(c, "narrative"),
+		// color: c.querySelector('color') ? c.querySelector('color').textContent : '#888'
     }));
     songs = Array.from(xmlDoc.querySelectorAll('song')).map(s => ({
-      title: s.querySelector('title').textContent,
-      artist: s.querySelector('artist').textContent,
-      narrative: s.querySelector('narrative').textContent,
-      original: s.querySelector('original').textContent,
-      translation: s.querySelector('translation').textContent,
-      spotify: s.querySelector('spotify') ? s.querySelector('spotify').textContent : '',
-      playlist: s.querySelector('playlist').textContent,
-      appenddate: parseDateSafe(s.querySelector('appenddate').textContent),
-      composerID: s.querySelector('reference').textContent
+      title: 		getTextContent(s, "title"),
+      artist: 		getTextContent(s, "artist"),
+      narrative: 	getTextContent(s, "narrative"),
+      original: 	getTextContent(s, "original"),
+      translation: 	getTextContent(s, "translation"),
+      spotify: 		getTextContent(s, "spotify"),
+      playlist: 	getTextContent(s, "playlist"),
+      appenddate: 	getTextContent(s, "appenddate"),
+      composerID: 	getTextContent(s, "reference"),
     }));
     updatePlaylist();
   });
