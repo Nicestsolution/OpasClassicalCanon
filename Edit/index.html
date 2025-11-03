@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <title>Canon XML Beheer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+    }
+    h1 {
+      margin-bottom: 1rem;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin: 1rem 0;
+    }
+    a {
+      display: block;
+      padding: 0.8rem;
+      background: #003366;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    a:hover {
+      background: #005599;
+    }
+	a.button-link {
+		display: block;
+		padding: 0.8rem;
+		background: #003366;
+		color: white;
+		text-decoration: none;
+		border-radius: 5px;
+		font-weight: bold;
+		text-align: left;
+	}
+	a.button-link:hover {
+		background: #005599;
+	}
+  </style>
+</head>
+<body>
+  <h1>📚 Canon XML Beheer</h1>
+  <ul>
+    <li><a href="add_composer.php">➕ Voeg nieuwe componist toe</a></li>
+    <li><a href="add_song.php">➕ Voeg nieuwe song toe</a></li>
+    <li><a href="edit_composer.php">✏️ Bewerk bestaande componist</a></li>
+    <li><a href="edit_song.php">✏️ Bewerk bestaande song</a></li>
+    <!-- <li><a href="view_canon.php">📄 Bekijk canon.xml</a></li>-->
+    <li><a href="#" onclick="backupCanon()" class="button-link">🗂️ Maak back-up van canon.xml</a></li>
+	<p id="backupStatus" style="color: green; margin-left: 1rem;"></p>
+
+	<li><a href="#" onclick="publishCanon()" class="button-link">🚀 Publish canon.xml</a></li>
+	<p id="publishStatus" style="color: green; margin-left: 1rem;"></p>
+
+  </ul>
+<script>
+function publishCanon() {
+  fetch('publish.php')
+    .then(response => response.text())
+    .then(text => {
+      document.getElementById("publishStatus").textContent = text;
+      setTimeout(() => {
+        document.getElementById("publishStatus").textContent = "";
+      }, 4000);
+    })
+    .catch(err => {
+      document.getElementById("publishStatus").textContent = "❌ Publicatie mislukt.";
+    });
+}
+function backupCanon() {
+  fetch('backup.php')
+    .then(response => response.text())
+    .then(text => {
+      document.getElementById("backupStatus").textContent = text;
+      setTimeout(() => {
+        document.getElementById("backupStatus").textContent = "";
+      }, 4000);
+    })
+    .catch(err => {
+      document.getElementById("backupStatus").textContent = "❌ Back-up mislukt.";
+    });
+}
+
+</script>
+  
+</body>
+</html>
+
