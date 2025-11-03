@@ -337,7 +337,7 @@ function renderComposers() {
 		const styleLine = `<em>${composer.style}</em> (${lifeSpan})`;
 		const birth = composer.birth || "?";
 		const death = composer.death || "heden";
-		const narrative = composer.description || "";
+		//const narrative = composer.description || "";
 
 		// Collapsed view
 		const collapsed = document.createElement("div");
@@ -375,7 +375,7 @@ function renderComposers() {
 
 		// Expanded view Beschrijving
 		const descPara = document.createElement("p");
-		descPara.textContent = composer.description;
+		descPara.innerHTML = composer.description;
 		expanded.appendChild(descPara);
 	
 		// Expanded view Songs
@@ -391,17 +391,6 @@ function renderComposers() {
 			expandedSong.className = "expanded";
 			expandedSong.style.display = "none";
 			collapsedSong.style.display = "block";
-				  /*
-				  songDiv.innerHTML = `
-					<h3 style="cursor:pointer; color:#444;">${song.title}</h3>
-				  `;
-				  
-				  songDiv.querySelector("h3").addEventListener("click", () => {
-					const detailBlock = createSongDetailBlock(song);		
-					expandedSong.appendChild(detailBlock);
-					});
-					*/
-		
 			expandedSong.appendChild(createSongDetailBlock(song));
 			
 			// Toggle
