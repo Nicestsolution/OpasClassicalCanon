@@ -125,6 +125,20 @@
 	  font-weight: normal;
 	  color: #555;
 	}
+	.svg-tooltip {
+	  position: absolute;
+	  background-color: #fefefe;
+	  border: 1px solid #ccc;
+	  padding: 6px 10px;
+	  font-size: 0.85rem;
+	  color: #003366;
+	  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+	  border-radius: 4px;
+	  pointer-events: none;
+	  white-space: nowrap;
+	  z-index: 1000;
+	  display: none;
+}
 
 </style>
 </head>
@@ -150,22 +164,29 @@ let composers = [];
 let songs = [];// Cross-browser veilige datum-parser.
 // Safari kan problemen hebben met het rechtstreeks parsen van "YYYY-MM-DD".
 // We maken daarom zelf een Date-object op basis van jaar/maand/dag wanneer mogelijk.
-function parseDateSafe(text) {
-  if (!text) return new Date(2000, 0, 1);
-  const s = text.trim();
-  // YYYY-MM-DD
-  const iso = s.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
-  if (iso) return new Date(parseInt(iso[1], 10), parseInt(iso[2], 10) - 1, parseInt(iso[3], 10));
-  // YYYY/MM/DD
-	const sl = s.match(/^(\d{4})\/(\d{1,2})\/(\d{1,2})/);
-  if (sl) return new Date(parseInt(sl[1], 10), parseInt(sl[2], 10) - 1, parseInt(sl[3], 10));
-  // Normaliseer spaties/newlines (bijv. "2024\n 11\n 01") naar YYYY/MM/DD als mogelijk
-  const nums = s.match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/);
-  if (nums) return new Date(parseInt(nums[1], 10), parseInt(nums[2], 10) - 1, parseInt(nums[3], 10));
-  return new Date(s);
+
+// Tooltip-element aanmaken
+const tooltip = document.createElement("div");
+tooltip.className = "svg-tooltip";
+document.body.appendChild(tooltip);
+
+// Tooltip timeout
+let tooltipTimeout;
+
+// Tooltip verbergfunctie
+function hideTooltip() {
+  clearTimeout(tooltipTimeout);
+  tooltip.style.display = "none";
 }
 
+// Verberg tooltip bij scroll, resize, touchmove
+window.addEventListener("scroll", hideTooltip);
+window.addEventListener("resize", hideTooltip);
+window.addEventListener("touchmove", hideTooltip);
+
+// Sectiewissel
 function showSection(section) {
+    hideTooltip();
   if (section === "playlist") {
     playlist.style.display = "block";
     content.style.display = "none";
@@ -199,18 +220,26 @@ function createSongDetailBlock(song) {
   const block = document.createElement("div");
   block.className = "song-detail-block";
 
+  const originalLines = song.original ? song.original.split("<br>") : [];
+  const translationLines = song.translation ? song.translation.split("<br>") : [];
+
+  const dateString = song.appenddate instanceof Date
+    ? song.appenddate.toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })
+    : "";
+
   block.innerHTML = `
     <h3>${song.title}</h3>
     ${song.artist ? `<p><strong>Artiest:</strong> ${song.artist}</p>` : ""}
-    ${song.appenddate ? `<p style="margin-top:0.2rem;"><em>Toegevoegd: ${new Date(song.appenddate).toLocaleDateString('nl-NL', { year: 'numeric', month: 'long', day: 'numeric' })}</em></p>` : ""}
-    <p>${song.narrative || ""}</p>
-    ${song.original && song.translation ? `
+    ${song.playlist ? `<p><strong>Playlist:</strong> ${song.playlist}</p>` : ""}
+    ${dateString ? `<p style="margin-top:0.2rem;"><em>Toegevoegd: ${dateString}</em></p>` : ""}
+    ${song.narrative ? `<p>${song.narrative}</p>` : ""}
+    ${originalLines.length && translationLines.length ? `
       <table class="lyrics">
         <tr><th>Origineel</th><th>Vertaling</th></tr>
-        ${song.original.split("<br>").map((line, i) => `
+        ${originalLines.map((line, i) => `
           <tr>
             <td>${line}</td>
-            <td>${song.translation.split("<br>")[i] || ""}</td>
+            <td>${translationLines[i] || ""}</td>
           </tr>
         `).join("")}
       </table>
@@ -250,11 +279,12 @@ function renderPlaylist(selectedPlaylist) {
 	  playlist.appendChild(spotifyLink);
 	}
 
-  const filteredSongs = songs.filter(song =>     song.playlist?.trim().toLowerCase() === normalizedPlaylist);  
-  filteredSongs.sort((a, b) => b.appenddate - a.appenddate);
-  filteredSongs.forEach((song, index) => {
+	const filteredSongs = songs.filter(song =>     song.playlist?.trim().toLowerCase() === normalizedPlaylist);  
+	filteredSongs.sort((a, b) => b.appenddate.getTime() - a.appenddate.getTime());
+
+	filteredSongs.forEach((song, index) => {
     const composer = composers.find(c => c.id === song.composerID);
-    const composerName = composer ? `${composer.name}, ${composer.familyname}` : "Anoniem";
+    const composerName = composer ? `${composer.name} ${composer.familyname}` : "Anoniem";
     const birth = composer ? composer.birth : "";
     const death = composer ? composer.death : "";
     const lifeSpan = composer ? formatLifeSpan(composer) : "";
@@ -322,6 +352,7 @@ function renderPlaylist(selectedPlaylist) {
   });
 } 
 
+//-------------Componistenlijst-start------------------
 function renderComposers() {
 	playlist.innerHTML = '';
 	content.innerHTML = '';
@@ -380,6 +411,7 @@ function renderComposers() {
 	
 		// Expanded view Songs
 		const composerSongs = songs.filter(song => song.composerID === composer.id);
+		composerSongs.sort((a, b) => b.appenddate.getTime() - a.appenddate.getTime());
 		composerSongs.forEach(song => {
 			const songDiv = document.createElement("div");
 			songDiv.className = "song-block";
@@ -434,17 +466,62 @@ function renderComposers() {
 	});
   
 }
+//-------------Componistenlijst-eind------------------
 
+
+//-------------Componistentijdlijn-begin-----------------
 function renderComposerTimeline() {
 	playlist.innerHTML = '';
 	content.innerHTML = '';
 	const svgNS = "http://www.w3.org/2000/svg";
+		
+	// Legenda
+	const legend = document.createElement("div");
+		legend.className = "timeline-legend";
+		legend.style.display = "flex";
+		legend.style.flexWrap = "wrap";
+		legend.style.gap = "1rem";
+		legend.style.marginBottom = "1rem";
+		legend.style.alignItems = "center";
+	
+	const colorMap = {
+		gregoriaans: "#AA9922",
+		middeleeuws: "#644BB4",
+		renaissance: "#60C600",
+		barok: "#BB0050",
+		klassiek: "#1E90FF",
+		romantiek: "#228B22",
+		impressionisme: "#EE88AA",
+		modern: "#EE8C00",
+		postmodern: "#AA00AA"
+	};
+	
+	Object.entries(colorMap).forEach(([style, color]) => {
+	  const item = document.createElement("div");
+	  item.style.display = "flex";
+	  item.style.alignItems = "center";
+	  item.style.gap = "0.5rem";
+
+	  const swatch = document.createElement("div");
+	  swatch.style.width = "16px";
+	  swatch.style.height = "16px";
+	  swatch.style.backgroundColor = color;
+	  swatch.style.border = "1px solid #333";
+
+	  const label = document.createElement("span");
+	  label.textContent = style.charAt(0).toUpperCase() + style.slice(1);
+
+	  item.appendChild(swatch);
+	  item.appendChild(label);
+	  legend.appendChild(item);
+	});
+	
 	const svg = document.createElementNS(svgNS, "svg"); 
 	const containerWidth = content.clientWidth || 800; // fallback
 	const scaleWidth = 0.8 * containerWidth;
 	const nameWidth = 0.2 * containerWidth;
 	svg.setAttribute("width", containerWidth);
-	const svgHeight = composers.length * 30 + 50;
+	const svgHeight = composers.length * 25 + 40;
 	svg.setAttribute("height", svgHeight);
 	
 	svg.style.border = "1px solid #ccc";
@@ -477,10 +554,10 @@ function renderComposerTimeline() {
 
 		// Label
 		const label = document.createElementNS(svgNS, "text");
-		label.setAttribute("x", x - 5);
+		label.setAttribute("x", x + 10);
 		label.setAttribute("y", 30); // bovenaan
-		label.setAttribute("transform", `rotate(-45 ${x - 5},10)`); // 45° linksom
-		label.setAttribute("font-size", "10");
+		label.setAttribute("transform", `rotate(-60 ${x + 10},30)`); // 60° linksom
+		label.setAttribute("font-size", "12");
 		label.setAttribute("fill", "#333");
 		label.textContent = year;
 		svg.appendChild(label);
@@ -491,44 +568,70 @@ function renderComposerTimeline() {
 
 	// Levenslijn
 	composers.forEach((composer, index) => {
-	
+		const initials = composer.name
+		  .split(" ")
+		  .map(part => part[0])
+		  .join(".") + ".";
 		const style = composer.style.toLowerCase();
-		const colorMap = {
-			middeleeuws: "8C8F7C",
-			renaissance: "15A65B",
-			barok: "#8B0000",
-			klassiek: "#1E90FF",
-			romantiek: "#228B22",
-			modern: "#FF8C00"
-		};
 		const fillColor = colorMap[style] || "#555";
 		const death = composer.death || endYear;
 		
-		const y = index * 30 + 40;
+		const y = index * 25 + 40;
 		const line = document.createElementNS(svgNS, "rect");
 		line.setAttribute("x", yearToX(composer.birth));
 		line.setAttribute("y", y);
 		line.setAttribute("width", yearToX(death) - yearToX(composer.birth));
-		line.setAttribute("height", 10);
+		line.setAttribute("height", 14);
 		line.setAttribute("fill", fillColor);
 		line.style.cursor = "pointer";
 		line.addEventListener('click', () => showComposerDetails(composer.id, 'timeline'));
+		line.addEventListener("mouseenter", e => {
+		    tooltip.textContent = `${composer.name} ${composer.familyname}`;
+		    tooltip.style.display = "block";
+		    clearTimeout(tooltipTimeout); // reset vorige timer
+            tooltipTimeout = setTimeout(() => {
+                tooltip.style.display = "none";
+            }, 5000); // verberg na 5 seconden
+		});
+		line.addEventListener("touchstart", e => {
+            tooltip.textContent = `${composer.name} ${composer.familyname}`;
+            tooltip.style.display = "block";
+            clearTimeout(tooltipTimeout);
+            tooltipTimeout = setTimeout(() => {
+                tooltip.style.display = "none";
+            }, 5000);
+        });
+
+		line.addEventListener("mousemove", e => {
+		  tooltip.style.left = `${e.pageX + 10}px`;
+		  tooltip.style.top = `${e.pageY + 10}px`;
+		});
+
+		line.addEventListener("mouseleave", () => {
+		  tooltip.style.display = "none";
+		});
+		
+        line.addEventListener("touchend", () => {
+          tooltip.style.display = "none";
+        });
+
 		svg.appendChild(line);
 
 		// Naam label
 		const label = document.createElementNS(svgNS, "text");
 		label.setAttribute("x", 5);
-		label.setAttribute("y", y + 8);
+		label.setAttribute("y", y + 12);
 		label.setAttribute("fill", "#000");
-		label.setAttribute("font-size", "12");
-		label.textContent = composer.familyname;
+		label.setAttribute("font-size", "15");
+		label.textContent = `${initials} ${composer.familyname}`;
 		label.style.cursor = "pointer";
 		label.addEventListener('click', () => showComposerDetails(composer.id, 'timeline'));
 		svg.appendChild(label); 
-  });
-
-  content.appendChild(svg);
+	});
+	content.appendChild(legend);	
+	content.appendChild(svg);
 }
+//-------------Componistentijdlijn-eind-----------------
 
 function updateView() {
   const view = document.getElementById('viewSelector').value;
@@ -560,6 +663,7 @@ function showComposerDetails(id, fromView) {
   `;
 
   const composerSongs = songs.filter(song => song.composerID === composer.id);
+  composerSongs.sort((a, b) => b.appenddate.getTime() - a.appenddate.getTime());
   composerSongs.forEach(song => {
     const songDiv = document.createElement('div');
     songDiv.className = 'song';
@@ -569,14 +673,45 @@ function showComposerDetails(id, fromView) {
       <p><em>${song.artist}</em></p>
     `;
 	*/
-	songDiv.innerHTML = `
-      <h3>${song.title}</h3>
-	`;
-    detailDiv.appendChild(songDiv);
+	const songBlock = document.createElement("div");
+	songBlock.className = "song-block";
+
+	const collapsed = document.createElement("div");
+	collapsed.className = "collapsed";
+	collapsed.innerHTML = `<strong>${song.title}</strong>`;
+	collapsed.style.cursor = "pointer";
+
+	const expanded = document.createElement("div");
+	expanded.className = "expanded";
+	expanded.style.display = "none";
+	collapsed.style.display = "block";
+
+	// Vul de songdetails in
+	expanded.appendChild(createSongDetailBlock(song));
+
+	// Sluitknop
+	const closeBtn = document.createElement("button");
+	closeBtn.textContent = "Sluit muzieknummer";
+	closeBtn.onclick = () => {
+	  expanded.style.display = "none";
+	  collapsed.style.display = "block";
+	};
+	expanded.appendChild(closeBtn);
+
+	// Toggle
+	collapsed.onclick = () => {
+	  expanded.style.display = "block";
+	  collapsed.style.display = "none";
+	};
+
+	songBlock.appendChild(collapsed);
+	songBlock.appendChild(expanded);
+	detailDiv.appendChild(songBlock);
+
   });
 
   const closeBtn = document.createElement('button');
-  closeBtn.textContent = 'Sluit';
+  closeBtn.textContent = 'Terug';
   closeBtn.style.marginTop = '1rem';
   closeBtn.style.padding = '0.5rem 1rem';
   closeBtn.style.fontSize = '1rem';
@@ -602,38 +737,52 @@ function showComposerDetails(id, fromView) {
 
 function getTextContent(parent, selector) {
   const el = parent.querySelector(selector);
-  return el ? el.textContent : "";
+  return el ? el.textContent.trim() : "";
+}
+
+function parseDateFromChildren(node) {
+  if (!node) return new Date(2000, 0, 1);
+  const year  = parseInt(getTextContent(node, "year"), 10);
+  const month = parseInt(getTextContent(node, "month"), 10);
+  const day   = parseInt(getTextContent(node, "day"), 10);
+  if (isNaN(year) || isNaN(month) || isNaN(day)) return new Date(2000, 0, 1);
+  return new Date(year, month - 1, day);
+}
+
+function decodeHTMLEntities(text) {
+  const textarea = document.createElement('textarea');
+  textarea.innerHTML = text;
+  return textarea.value;
 }
 
 // Initialisatie: laad XML, parseer data, toon standaard playlist
-fetch('canon.xml')
+fetch('canon.xml?v=' + Date.now())
   .then(response => response.text())
   .then(xmlText => {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "application/xml");
     composers = Array.from(xmlDoc.querySelectorAll('composer')).map(c => ({
-		id: 		getTextContent(c, "ID"),
-		name: 		getTextContent(c, "name"),
-		familyname: getTextContent(c, "familyname"),
-		style: 		getTextContent(c, "style"),
-		birth: 		getTextContent(c, "yearofbirth"), 
-		placeofbirth: getTextContent(c, "placeofbirth"),
-		death: 		getTextContent(c, "yearofdeath"), 
-		placeofdeath: getTextContent(c, "placeofdeath"),
+		id: 		decodeHTMLEntities(getTextContent(c, "ID")),
+		name: 		decodeHTMLEntities(getTextContent(c, "name")),
+		familyname: decodeHTMLEntities(getTextContent(c, "familyname")),
+		style: 		decodeHTMLEntities(getTextContent(c, "style")),
+		birth: 		decodeHTMLEntities(getTextContent(c, "yearofbirth")), 
+		placeofbirth: decodeHTMLEntities(getTextContent(c, "placeofbirth")),
+		death: 		decodeHTMLEntities(getTextContent(c, "yearofdeath")), 
+		placeofdeath: decodeHTMLEntities(getTextContent(c, "placeofdeath")),
 		description: getTextContent(c, "narrative"),
 		// color: c.querySelector('color') ? c.querySelector('color').textContent : '#888'
     }));
     songs = Array.from(xmlDoc.querySelectorAll('song')).map(s => ({
-      title: 		getTextContent(s, "title"),
-      artist: 		getTextContent(s, "artist"),
+      title: 		decodeHTMLEntities(getTextContent(s, "title")),
+      artist: 		decodeHTMLEntities(getTextContent(s, "artist")),
       narrative: 	getTextContent(s, "narrative"),
       original: 	getTextContent(s, "original"),
       translation: 	getTextContent(s, "translation"),
-      spotify: 		getTextContent(s, "spotify"),
-      playlist: 	getTextContent(s, "playlist"),
-      appenddate: parseDateSafe(getTextContent(s,"appenddate")), 
-      composerID: 	getTextContent(s, "reference"),
-	 	  
+      spotify: 		decodeHTMLEntities(getTextContent(s, "spotify")),
+      playlist: 	decodeHTMLEntities(getTextContent(s, "playlist")),
+      appenddate: 	parseDateFromChildren(s.querySelector("appenddate")),
+      composerID: 	decodeHTMLEntities(getTextContent(s, "reference")),	 	  
     }));
     updatePlaylist();
   });
