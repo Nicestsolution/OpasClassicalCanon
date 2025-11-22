@@ -25,8 +25,8 @@
       #playlistSelector,
       #viewSelector {
         flex: 1;                   /* elk neemt 50% van de breedte */
-        font-size: 2rem;          /* grotere tekst */
-        padding: 1rem;              /* hogere knoppen */
+        font-size: 1.7rem;          /* grotere tekst */
+        padding: 0.8rem;              /* hogere knoppen */
       }
     }
   body {
@@ -74,6 +74,17 @@
 	color: #003366;
     cursor: pointer;
   }
+	button.back {
+	  margin-top: 1rem;
+	  padding: 0.5rem 1rem;
+	  font-size: 1rem;
+	  background-color: #003366;
+	  color: white;
+	  border: none;
+	  border-radius: 4px;
+	  cursor: pointer;
+	}
+  
   table.lyrics {
     width: 100%;
     border-collapse: collapse;

@@ -83,29 +83,27 @@ function updateView() {
   }
 }
 
+function logScrollPosition(label) {
+  const pos = window.pageYOffset || window.scrollY;
+  console.log(`${label}: ${pos}`);
+  return pos;
+}
+
 function backToPlaylist() {
   // Do NOT re-render the whole playlist if you can avoid it.
   showSection('playlist');
 
-  // Ensure previously expanded song is closed (optional)
-  /*if (lastSongElId) {
-    const songEl = document.getElementById(lastSongElId);
-    const expanded = songEl?.querySelector('.expanded');
-    if (expanded) expanded.style.display = 'none';
-  }*/
-
   // Restore scroll on the next frame (after section is visible)
   requestAnimationFrame(() => {
-    if (scroller === window) {
-      window.scrollTo({ top: savedScroll, behavior: 'instant' });
-    } else {
-      scroller.scrollTo({ top: savedScroll, behavior: 'instant' });
-    }
+    requestAnimationFrame(() => {
+		console.log("Restoring scroll to:", savedScroll);
+      window.scrollTo({ top: savedScroll, behavior: "instant" });
+		logScrollPosition("Scroll after restore");
+    });
   });
 
   lastSongElId = null;
 }
-
 
 /* ========================
    Rendering functies
@@ -207,7 +205,8 @@ function renderPlaylist(selectedPlaylist) {
 
     const block = document.createElement("div");
     block.className = "song-block";
-
+	block.id = song.id; // use XML ID
+	
     const collapsed = document.createElement("div");
     collapsed.className = "collapsed";
     collapsed.innerHTML = `<strong><a href="#" style="color:#003366; text-decoration:none; cursor:pointer;">${composerName}</a></strong>: ${song.title}`;
@@ -239,9 +238,6 @@ function renderPlaylist(selectedPlaylist) {
       ${song.spotify ? `<p><a href="${song.spotify}" target="_blank">🎧 Luister op Spotify</a></p>` : ""}
     `;
 	
-	// automatisch scrollen naar bovenkant van expanded
-	expanded.scrollIntoView({ behavior: "smooth", block: "start" });
-
     const closeBtn = document.createElement("button");
     closeBtn.textContent = "Sluit";
     closeBtn.onclick = () => {
@@ -253,18 +249,23 @@ function renderPlaylist(selectedPlaylist) {
     expanded.querySelector("a").addEventListener("click", e => {
       e.preventDefault();
 	  savedScroll = window.scrollY;
-	  lastSongId = song.id;
+	  lastSongElId = song.id;
       showComposerDetails(composer.id, "playlist");
     });
 
     collapsed.onclick = () => {
       expanded.style.display = "block";
       collapsed.style.display = "none";
-    };
-
+	  	
+		requestAnimationFrame(() => {
+		const rect = expanded.getBoundingClientRect();
+		const targetY = window.scrollY + rect.top - 60; // offset van 60px
+		window.scrollTo({ top: Math.max(0, targetY), behavior: "instant" });
+	  });
+	};
     block.appendChild(collapsed);
     block.appendChild(expanded);
-    playlist.appendChild(block);
+    playlist.appendChild(block);	
   });
 }
 
@@ -555,11 +556,8 @@ function renderComposerTimeline() {
 function showComposerDetails(id, fromView) {
 	  // If we came from playlist, remember scroll and the song element
   if (fromView === 'playlist') {
-    savedScroll = scroller === window ? window.scrollY : scroller.scrollTop;
-    // Best: pass the song element id when calling showComposerDetails
-    // If not passed, try to infer:
-    const activeSong = document.querySelector('.song.expanded') || document.activeElement?.closest('.song');
-    lastSongElId = activeSong?.id || null;
+    // scrollpositie wordt al gezet in de click-handler
+    // lastSongElId wordt daar ook al gezet
   } else {
     savedScroll = 0;
     lastSongElId = null;
@@ -681,6 +679,7 @@ fetch('canon.xml?v=' + Date.now())
     }));
 
     songs = Array.from(xmlDoc.querySelectorAll('song')).map(s => ({
+	  id: decodeHTMLEntities(getTextContent(s, "ID")),
       title: decodeHTMLEntities(getTextContent(s, "title")),
       artist: decodeHTMLEntities(getTextContent(s, "artist")),
       narrative: getTextContent(s, "narrative"),
