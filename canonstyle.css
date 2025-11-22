@@ -1,0 +1,136 @@
+  /* CSS styling voor leesbaarheid, responsiviteit en visuele structuur */
+  #menu {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+  }
+  #menu button, #playlistSelector, #viewSelector {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+	
+    /* 📱 Smartphones en kleinere schermen tot 1200px */
+    @media (max-width: 1200px) {
+      #menu {
+        flex-direction: row;       /* naast elkaar */
+        gap: 0.75rem;
+      }
+    
+      #menu button,
+      #playlistSelector,
+      #viewSelector {
+        flex: 1;                   /* elk neemt 50% van de breedte */
+        font-size: 2rem;          /* grotere tekst */
+        padding: 1rem;              /* hogere knoppen */
+      }
+    }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    margin: 1rem;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  h1, h2, h3 {
+    margin-top: 1rem;
+  }
+  .song-block {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 1rem;
+  }
+  .composer-block {
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #003366;
+    padding-bottom: 1rem;
+  }
+  
+  .collapsed {
+    cursor: pointer;
+    font-weight: bold;
+    color: #003366;
+    padding: 0.5rem;
+    background-color: #f0f0f0;
+    border-radius: 4px;
+  }
+  .collapsed:hover {
+    background-color: #e0e0e0;
+  }
+  .expanded {
+    margin-top: 0.5rem;
+  }
+  button {
+    margin-top: 0.1rem;
+    padding: 0.5rem 1rem;
+	background-color: #e0e0e0;
+	border-radius: 1rem;
+    font-size: 1rem;
+	color: #003366;
+    cursor: pointer;
+  }
+  table.lyrics {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  table.lyrics th, table.lyrics td {
+    border: 1px solid #ccc;
+    padding: 0.2rem;
+    vertical-align: top;
+  }
+  table.lyrics th {
+    background-color: #f0f0f0;
+    text-align: left;
+  }
+  @media (max-width: 1200px) {
+    body {
+      font-size: 1.3rem;
+    }
+    h1, h2, h3 {
+      font-size: 1.4rem;
+    }
+    p, .collapsed {
+      font-size: 1.2rem;
+    }
+    .collapsed {
+      padding: 0.75rem;
+    }
+  }
+  svg {
+    border: 1px solid #ccc;
+  }
+	.composer-name {
+	  font-size: 1.2em;
+	  color: #003366;
+	  cursor: pointer;
+	  display: flex;
+	  flex-wrap: wrap;
+	  align-items: baseline;
+	  gap: 0.5em;
+	}
+
+	.composer-lifespan {
+	  font-size: 0.9em;
+	  font-weight: normal;
+	  color: #555;
+	}
+	.svg-tooltip {
+	  position: absolute;
+	  background-color: #fefefe;
+	  border: 1px solid #ccc;
+	  padding: 6px 10px;
+	  font-size: 0.85rem;
+	  color: #003366;
+	  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+	  border-radius: 4px;
+	  pointer-events: none;
+	  white-space: nowrap;
+	  z-index: 1000;
+	  display: none;
+}
